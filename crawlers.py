@@ -23,7 +23,7 @@ for nameList in CelebrityList:
     color='color',
     license='commercial,modify',
     date=((2015, 1, 1), None))
-    google_crawler.crawl(keyword=name,filters=google_filters,max_num=3)
+    google_crawler.crawl(keyword=name,filters=google_filters,max_num=5)
 
     print("Scrawling " + name + " on Baidu")
     imageDir = folder_path + '/Baidu/' + name
