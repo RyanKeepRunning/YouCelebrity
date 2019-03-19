@@ -7,8 +7,11 @@ import {
   View,
   Image
 } from 'react-native';
-
+import Home from './pages/Home';
+import Camera from './pages/Camera';
+import Profile from './pages/Profile';
 import TabNavigator from 'react-native-tab-navigator';
+
 export default class App extends React.Component {
   constructor(props){
     super(props);
@@ -20,7 +23,6 @@ export default class App extends React.Component {
     let tabBarHeight = 80;
     return (
       <View style={styles.container}>
-      <Text style={styles.welcome}>Thanks for using YouCelebrity!</Text>
         <TabNavigator tabBarStyle={{ height: tabBarHeight}}>
             <TabNavigator.Item
                 selected={this.state.selectedTab === 'home'}
@@ -31,7 +33,7 @@ export default class App extends React.Component {
                                          source={{uri: 'https://www.freeiconspng.com/uploads/home-icons-29.png'}} />}
                 badgeText="1"
                 onPress={() => this.setState({ selectedTab: 'home' })}>
-                <Text>homepage</Text>
+                <Home/>
             </TabNavigator.Item>
             <TabNavigator.Item
                 selected={this.state.selectedTab === 'camera'}
@@ -41,7 +43,7 @@ export default class App extends React.Component {
                 renderSelectedIcon={() => <Image style={{width: 50, height: 50}}
                                          source={{uri: 'https://www.freeiconspng.com/minicovers/big-camera-icon--camera-icons--softiconsm-20.png'}} />}
                 onPress={() => this.setState({ selectedTab: 'camera' })}>
-                <Text>camera</Text>
+                <Camera/>
             </TabNavigator.Item>
             <TabNavigator.Item
                 selected={this.state.selectedTab === 'profile'}
@@ -51,7 +53,7 @@ export default class App extends React.Component {
                 renderSelectedIcon={() => <Image style={{width: 50, height: 50}}
                                          source={{uri: 'https://www.freeiconspng.com/minicovers/profile-icon-1.png'}} />}
                 onPress={() => this.setState({ selectedTab: 'profile' })}>
-                <Text>profile</Text>
+                <Profile/>
             </TabNavigator.Item>
         </TabNavigator>
       </View>
@@ -59,30 +61,8 @@ export default class App extends React.Component {
   }
 }
 const styles = StyleSheet.create({
-  welcome: {
-    backgroundColor:'gray',
-    color: 'blue',
-    fontWeight:'bold',
-    fontSize:30,
-    lineHeight:150,
-    textAlign: 'center',
-    alignItems:'center',
-    textAlignVertical:'center'
-  },
   container: {
     flex: 1,
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#c0e2f7',
   },
-  page1: {
-    flex: 1,
-    backgroundColor: 'red'
-  },
-  page2: {
-    flex: 1,
-    backgroundColor: 'yellow'
-  },
-  image: {
-    height: 50,
-    width: 50
-  }
 });
