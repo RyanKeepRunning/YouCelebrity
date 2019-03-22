@@ -11,14 +11,29 @@ import Home from './pages/Home';
 import Camera from './pages/Camera';
 import Profile from './pages/Profile';
 import TabNavigator from 'react-native-tab-navigator';
+import Login from './pages/Login';
 
 export default class App extends React.Component {
   constructor(props){
     super(props);
     this.state={
-      selectedTab:'home'
+      selectedTab:'home',
+      isUserLoggedIn: true,
     }
   }
+
+  handleLogout=()=>{
+    this.setState({
+      isUserLoggedIn:false
+    })
+  }
+
+  handleLogin =()=>{
+    this.setState({
+      isUserLoggedIn:true
+    })
+  }
+
   render() {
     let tabBarHeight = 80;
     return (
@@ -53,7 +68,10 @@ export default class App extends React.Component {
                 renderSelectedIcon={() => <Image style={{width: 50, height: 50}}
                                          source={{uri: 'https://www.freeiconspng.com/minicovers/profile-icon-1.png'}} />}
                 onPress={() => this.setState({ selectedTab: 'profile' })}>
-                <Profile/>
+                {this.state.isUserLoggedIn?
+                  <Profile screenProps={{handleLogout: this.handleLogout}}/>
+                  :
+                  <Login screenProps = {{handleLogin:this.handleLogin}}/>}
             </TabNavigator.Item>
         </TabNavigator>
       </View>

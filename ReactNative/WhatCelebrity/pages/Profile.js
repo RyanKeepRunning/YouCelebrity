@@ -4,36 +4,79 @@ import {
   Text,
   View,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from 'react-native';
+import { createAppContainer, createStackNavigator} from 'react-navigation';
+import ModifyProfile from './ModifyProfile';
 
 class Profile extends Component {
+  constructor(props){
+    super(props);
+  }
+  static navigationOptions = { header: null }
 
+  onDeleteHistory=()=>{
+    Alert.alert('Warning',
+    ' You would lose all the records if you delete the history!',
+    [
+      {text:'Continue',onPress:()=>console.log('Continue')},
+      {text:'Cancel',style:'cancel',onPress:()=>console.log('History deleted')}
+    ])
+  }
+  onLogout=()=>{
+    console.log(this.props);
+    this.props.screenProps.handleLogout();
+  }
   render() {
     return (
       <View style={styles.container}>
+
           <View style={styles.header}></View>
           <Image style={styles.avatar} source={{uri: 'https://cdn140.picsart.com/268503922008211.png?r1024x1024'}}/>
+
           <View style={styles.body}>
             <View style={styles.bodyContent}>
-              <Text style={styles.name}>Ryan</Text>  
-              <TouchableOpacity style={styles.buttonContainer}>
+              <Text style={styles.name}>Ryan</Text>
+              <Text style={styles.info}>App developer</Text>    
+              <TouchableOpacity 
+              style={styles.buttonContainer}
+              onPress={()=>{
+                this.props.navigation.navigate('ModifyProfile');
+              }}
+              >
                 <Text>Modify Profile</Text>  
-              </TouchableOpacity>              
-              <TouchableOpacity style={styles.buttonContainer}>
+              </TouchableOpacity>               
+              <TouchableOpacity style={styles.buttonContainer}
+                onPress={()=>this.onDeleteHistory()}>
                 <Text>Delete History</Text> 
               </TouchableOpacity>
-              <TouchableOpacity style={styles.logoutButtonContainer}>
+              <TouchableOpacity style={styles.logoutButtonContainer}
+                onPress={()=>this.onLogout()}>
                 <Text>Logout</Text> 
               </TouchableOpacity>
             </View>
         </View>
+
       </View>
     );
   }
 }
 
+const RootStack = createStackNavigator(
+  {
+    Profile: Profile,
+    ModifyProfile: ModifyProfile,
+  }
+);
+
+const AppContainer = createAppContainer(RootStack);
+
 const styles = StyleSheet.create({
+  container:{
+    flex:1,
+    backgroundColor: '#c0e2f7',
+  },
   header:{
     backgroundColor: "#00BFFF",
     height:100,
@@ -65,9 +108,15 @@ const styles = StyleSheet.create({
     color: "#464d59",
     fontWeight: "600"
   },
+  info:{
+    height:30,
+    fontSize:22,
+    color: "#464d59",
+    fontWeight: "600"
+  },
   
   buttonContainer: {
-    marginTop:25,
+    marginTop:22,
     height:45,
     flexDirection: 'row',
     justifyContent: 'center',
@@ -78,7 +127,7 @@ const styles = StyleSheet.create({
   },
   
   logoutButtonContainer: {
-    marginTop:25,
+    marginTop:22,
     height:45,
     flexDirection: 'row',
     justifyContent: 'center',
@@ -89,4 +138,5 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Profile;
+export default AppContainer;
+// export default Profile;
