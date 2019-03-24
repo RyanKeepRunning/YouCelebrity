@@ -33,7 +33,7 @@ class Camera extends Component{
     render(){
         console.log(this.state);
         return(
-        <View>
+        <View style={styles.container}>
             <TouchableOpacity
                 style={styles.button}
                 onPress={()=>this.onPressImgGallery()}
@@ -53,8 +53,12 @@ class Camera extends Component{
 }
 
 const styles = StyleSheet.create({
+    container:{
+        flex:1,
+        backgroundColor:'#c0e2f7'
+    },
     button:{
-        backgroundColor: '#4286f4',
+        backgroundColor: '#00BFFF',
         marginRight:40,
         marginLeft:40,
         marginTop: 120,
@@ -67,6 +71,7 @@ const styles = StyleSheet.create({
     text:{
         color:'#fff',
         textAlign:'center',
+        fontSize:20,
         paddingLeft : 10,
         paddingRight : 10
     }

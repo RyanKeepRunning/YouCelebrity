@@ -5,9 +5,10 @@ import {
   View,
   Image,
   TouchableOpacity,
-  Alert
+  Alert,
+  AsyncStorage
 } from 'react-native';
-import { createAppContainer, createStackNavigator} from 'react-navigation';
+// import { createAppContainer, createStackNavigator} from 'react-navigation';
 import ModifyProfile from './ModifyProfile';
 
 class Profile extends Component {
@@ -24,9 +25,9 @@ class Profile extends Component {
       {text:'Cancel',style:'cancel',onPress:()=>console.log('History deleted')}
     ])
   }
-  onLogout=()=>{
-    console.log(this.props);
-    this.props.screenProps.handleLogout();
+  onLogout= async ()=>{
+    await AsyncStorage.clear();
+    this.props.navigation.navigate('Authentication');
   }
   render() {
     return (
@@ -45,15 +46,15 @@ class Profile extends Component {
                 this.props.navigation.navigate('ModifyProfile');
               }}
               >
-                <Text>Modify Profile</Text>  
+                <Text style={styles.text}>Modify Profile</Text>  
               </TouchableOpacity>               
               <TouchableOpacity style={styles.buttonContainer}
                 onPress={()=>this.onDeleteHistory()}>
-                <Text>Delete History</Text> 
+                <Text style={styles.text}>Delete History</Text> 
               </TouchableOpacity>
               <TouchableOpacity style={styles.logoutButtonContainer}
                 onPress={()=>this.onLogout()}>
-                <Text>Logout</Text> 
+                <Text style={styles.text}>Logout</Text> 
               </TouchableOpacity>
             </View>
         </View>
@@ -63,14 +64,14 @@ class Profile extends Component {
   }
 }
 
-const RootStack = createStackNavigator(
-  {
-    Profile: Profile,
-    ModifyProfile: ModifyProfile,
-  }
-);
+// const RootStack = createStackNavigator(
+//   {
+//     Profile: Profile,
+//     ModifyProfile: ModifyProfile,
+//   }
+// );
 
-const AppContainer = createAppContainer(RootStack);
+// const AppContainer = createAppContainer(RootStack);
 
 const styles = StyleSheet.create({
   container:{
@@ -135,8 +136,13 @@ const styles = StyleSheet.create({
     width:250,
     borderRadius:30,
     backgroundColor: "#bf5f5f",
+  },
+
+  text:{
+    fontSize:18,
+    color:"#fff"
   }
 });
 
-export default AppContainer;
+export default Profile;
 // export default Profile;

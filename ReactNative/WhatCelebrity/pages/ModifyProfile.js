@@ -13,7 +13,8 @@ import {
     TextInput,
     KeyboardAvoidingView,
     ScrollView
-  } from 'react-native';
+    } from 'react-native';
+// import axios from "axios";
 import {Header} from 'react-navigation';
 
 class ModifyProfile extends Component {
@@ -24,6 +25,35 @@ class ModifyProfile extends Component {
             name:"",
             info:"",
         }
+    }
+
+    async componentDidMount(){
+
+    }
+
+    onHandleSubmit= async()=>{
+        let userId = 1;
+        const {goBack} = this.props.navigation;
+        const postData = {
+            userId: userId,
+            avatar:this.state.avatar,
+            name:this.state.name,
+            info:this.state.info
+        }
+        console.log(postData);
+        // try{
+        //     const response = await axios.post("http://localhost:3333/api/modifyProfile/"+userId,postData);
+        //     if(response.data.status === 'success'){
+        //         Alert.alert('Success','Profile was successfully modified!');
+        //         goBack();
+        //     }else{
+        //         Alert.alert('Failure','Oops! Something went wrong! Please try again!');
+        //     }
+        // }catch(e){
+        //     console.log(e);
+        // }
+        Alert.alert('Success','Profile was successfully modified!');
+        goBack();
     }
 
     render(){
@@ -50,8 +80,9 @@ class ModifyProfile extends Component {
                     maxLength={20}
                 />
                 <TouchableOpacity
+                    onPress={()=>this.onHandleSubmit()}
                     style={styles.submitButton}>
-                    <Text>Submit</Text>
+                    <Text style={styles.submitText}>Submit</Text>
                 </TouchableOpacity>
             </ScrollView>
         </KeyboardAvoidingView>
@@ -106,7 +137,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius:30,
         backgroundColor: "#00BFFF",
-    }
+    },
+    
+    submitText:{
+        color:'#fff',
+        fontSize:20,
+    },
 
 })
 
