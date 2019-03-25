@@ -1,8 +1,6 @@
 import React,{Component} from 'react';
 
 import {
-    Platform,
-    AppRegistry,
     StyleSheet,
     Text,
     View,
@@ -10,50 +8,49 @@ import {
     TouchableHighlight,
     Alert
   } from 'react-native';
-import Gallery from './Gallery';
-import { createAppContainer, createStackNavigator} from 'react-navigation';
 
 class Home extends Component{
     static navigationOptions = { header: null }
     handleCelebrityModel=()=>{
-        Alert.alert("Loading","Trying to use Celebrity Model");
+        Alert.alert('Wait',
+        'In which way could we get the photo for ya?',
+        [
+        {text:'Local storage',onPress:()=>console.log('Local storage')},
+        {text:'Camera',onPress:()=>console.log('Camera')},
+        {text:'Cancel',onPress:()=>console.log('Cancel')}
+        ])
     }
     handleAnimeModel=()=>{
-        Alert.alert("Loading","Trying to use Anime Model");
-    }
-    handleGallery=()=>{
-        this.props.navigation.navigate('Gallery');
+        Alert.alert('Wait',
+        'In which way could we get the photo for ya?',
+        [
+        {text:'Local storage',onPress:()=>console.log('Local storage')},
+        {text:'Camera',onPress:()=>console.log('Camera')},
+        {text:'Cancel',onPress:()=>console.log('Cancel')}
+        ])
     }
     
     render(){
         return(
             <View style={styles.container}>
-                    <TouchableHighlight
-                    onPress={()=>this.handleCelebrityModel()}>
-                    <Image
-                    style={styles.img}
-                    source={require('../assets/celebrity.png')}
-                    alt="CelebrityModel"
-                    />
-                    </TouchableHighlight>
+                <Text style={styles.text}>Choose a category</Text>
+                <TouchableHighlight
+                onPress={()=>this.handleCelebrityModel()}>
+                <Image
+                style={styles.img}
+                source={require('../assets/celebrity.png')}
+                alt="CelebrityModel"
+                />
+                </TouchableHighlight>
 
-                    <TouchableHighlight
-                    onPress={()=>this.handleAnimeModel()}>
-                    <Image
-                    style={styles.img}
-                    source={require('../assets/anime.jpg')}
-                    alt="AnimeModel"
-                    />
-                    </TouchableHighlight>
-
-                    <TouchableHighlight
-                    onPress={()=>this.handleGallery()}>
-                    <Image
-                    style={styles.img}
-                    source={require('../assets/gallery.jpg')}
-                    alt="Gallery"
-                    />
-                    </TouchableHighlight>
+                <TouchableHighlight
+                onPress={()=>this.handleAnimeModel()}>
+                <Image
+                style={styles.img}
+                source={require('../assets/anime.jpg')}
+                alt="AnimeModel"
+                />
+                </TouchableHighlight>
             </View>
         )
     }
@@ -72,7 +69,17 @@ class Home extends Component{
 const styles = StyleSheet.create({
     container:{
         flex:1,
-        backgroundColor:'#c0e2f7'
+        backgroundColor:'#c0e2f7',
+        alignItems: 'center',
+        fontFamily: 'Courier'
+    },
+    text:{
+        fontSize:28,
+        color: "#464d59",
+        fontWeight: "600",
+        textAlign:'center',
+        alignSelf:'center',
+        marginTop:50
     },
     img:{
         backgroundColor: '#fff',
@@ -82,7 +89,7 @@ const styles = StyleSheet.create({
         borderWidth: 4,
         borderColor: "white",
         alignSelf:'center',
-        marginTop:23
+        marginTop:43
     }
 });
 

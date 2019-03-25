@@ -8,7 +8,7 @@ import {
   Image
 } from 'react-native';
 import Home from './pages/Home';
-import Camera from './pages/Camera';
+// import Camera from './pages/Camera';
 import Profile from './pages/Profile';
 import ModifyProfile from './pages/ModifyProfile';
 // import TabNavigator from 'react-native-tab-navigator';
@@ -18,9 +18,9 @@ import Gallery from './pages/Gallery';
 import Authentication from './pages/Authentication';
 import { createAppContainer, createStackNavigator,createBottomTabNavigator, createSwitchNavigator} from 'react-navigation';
 import { MaterialCommunityIcons,
-  Entypo,
-  Feather,
-  MaterialIcons } from '@expo/vector-icons';
+  MaterialIcons,
+  FontAwesome,
+  SimpleLineIcons } from '@expo/vector-icons';
 
 class App extends React.Component {
   constructor(props){
@@ -98,11 +98,11 @@ const getTabBarIcon = (navigation, focused) => {
       <MaterialCommunityIcons name="home" size={50} color="#00BFFF" />
       :
       <MaterialCommunityIcons name="home-outline" size={50} color="#c0e2f7" />
-  }  else if (routeName === 'Camera') {
+  }  else if (routeName === 'Gallery') {
     return focused? 
-    <Entypo name="camera" size={45} color="#00BFFF" />
+    <FontAwesome name="picture-o" size={45} color="#00BFFF" />
       :
-      <Feather name="camera" size={45} color="#c0e2f7" />
+      <SimpleLineIcons name="picture" size={45} color="#c0e2f7" />
   }  else if (routeName === 'Profile') {
     return focused? 
     <MaterialIcons name="person" size={50} color="#00BFFF" />
@@ -112,13 +112,16 @@ const getTabBarIcon = (navigation, focused) => {
 }
 
 let HomeStack = createStackNavigator(
-  {Home,Gallery}
+  {Home}
   );
 let ProfileStack = createStackNavigator({
   Profile,ModifyProfile
 });
 let LoginStack = createStackNavigator({
   Login, Register
+})
+let GalleryStack = createStackNavigator({
+  Gallery
 })
 // const styles = StyleSheet.create({
 //   container: {
@@ -132,7 +135,7 @@ const MembershipSwitch = createSwitchNavigator({
 
 const TabNavigator = createBottomTabNavigator({
   Home:{screen:HomeStack},
-  Camera:{screen:Camera},
+  Gallery:{screen:GalleryStack},
   Profile:{screen:MembershipSwitch}
 },{
   defaultNavigationOptions: ({ navigation }) => ({
@@ -147,7 +150,7 @@ const TabNavigator = createBottomTabNavigator({
       fontFamily:'Courier',
       fontSize:15
     },
-    activeTintColor: 'tomato',
+    activeTintColor: '#00BFFF',
     inactiveTintColor: 'gray',
   },
 });

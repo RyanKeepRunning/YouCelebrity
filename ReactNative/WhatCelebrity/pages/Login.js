@@ -1,15 +1,9 @@
 import React,{Component} from 'react';
 import {
-    Platform,
-    AppRegistry,
     StyleSheet,
     Text,
-    View,
     Image,
-    Button,
     TouchableOpacity,
-    Alert,
-    Navigator,
     TextInput,
     KeyboardAvoidingView,
     ScrollView,

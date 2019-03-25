@@ -32,10 +32,8 @@ class Profile extends Component {
   render() {
     return (
       <View style={styles.container}>
-
           <View style={styles.header}></View>
           <Image style={styles.avatar} source={{uri: 'https://cdn140.picsart.com/268503922008211.png?r1024x1024'}}/>
-
           <View style={styles.body}>
             <View style={styles.bodyContent}>
               <Text style={styles.name}>Ryan</Text>
@@ -58,7 +56,6 @@ class Profile extends Component {
               </TouchableOpacity>
             </View>
         </View>
-
       </View>
     );
   }
@@ -70,7 +67,6 @@ class Profile extends Component {
 //     ModifyProfile: ModifyProfile,
 //   }
 // );
-
 // const AppContainer = createAppContainer(RootStack);
 
 const styles = StyleSheet.create({
