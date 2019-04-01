@@ -1,1 +1,0 @@
-# Celebrities Photos
