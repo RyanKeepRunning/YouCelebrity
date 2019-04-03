@@ -98,6 +98,7 @@ class Gallery extends Component{
                     <MasonryList
                         images={this.state.galleryList}
                         columns={3}
+                        backgroundColor={"#c0e2f7"}
                         renderIndividualHeader={(data) => {
                             return (
                                 <TouchableWithoutFeedback>

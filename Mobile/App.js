@@ -13,7 +13,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-
+import SelectImg from './pages/SelectImg';
 
 class App extends React.Component {
   constructor(props){
@@ -104,9 +104,9 @@ const getTabBarIcon = (navigation, focused) => {
   };
 }
 
-let HomeStack = createStackNavigator(
-  {Home}
-  );
+let HomeStack = createStackNavigator({
+  Home,SelectImg
+});
 let ProfileStack = createStackNavigator({
   Profile,ModifyProfile
 });
