@@ -7,9 +7,11 @@ import {
     TextInput,
     KeyboardAvoidingView,
     ScrollView,
-    AsyncStorage
+    Platform,
+    Alert
   } from 'react-native';
 import {Header} from 'react-navigation';
+import AsyncStorage from '@react-native-community/async-storage';
 // import axios from 'axios';
 
 class Register extends Component{
@@ -21,33 +23,45 @@ class Register extends Component{
         }
     }
 
+    validateEmail = (email) => {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
+    };
+
     onRegister = async () => {
-        // const postData = {
-        //     email:this.state.email,
-        //     password:this.state.password
-        // }
-        // try{
-        //     const response = await axios.post("http://localhost:3333/api/user/signup",postData);
-        //     if(response.data.status==="success"){
-        //         await AsyncStorage.setItem('userToken', response.data.token);
-        //         Alert.alert('Success','Successfully registered as '+this.state.email);
-        //         this.props.navigation.navigate('Authentication');
-        //     }else{
-        //         Alert.alert('Failure','Oops! It seems this email address has been used before');
-        //         this.props.navigation.navigate("Authentication");
-        //     }
-        // }catch(e){
-        //     console.log(e);
-        // }
-        const response = {
-            data:{
-                status:'success',
-                userToken:'1'
-            }
+        if (!this.validateEmail(this.state.email)) {
+            Alert.alert('Come on man!',"Don't play around! Please input a valid email address!");
+        } else if(this.state.password.length<5){
+            Alert.alert('For safety concern!','Try to set your password longer than 5 mate!')
         }
-        if(response.data.status==="success"){
-            await AsyncStorage.setItem('userToken', response.data.userToken);
-            this.props.navigation.navigate('Authentication');
+        else {
+            // const postData = {
+            //     email:this.state.email,
+            //     password:this.state.password
+            // }
+            // try{
+            //     const response = await axios.post("http://localhost:3333/api/user/signup",postData);
+            //     if(response.data.status==="success"){
+            //         await AsyncStorage.setItem('userToken', response.data.token);
+            //         Alert.alert('Success','Successfully registered as '+this.state.email);
+            //         this.props.navigation.navigate('Authentication');
+            //     }else{
+            //         Alert.alert('Failure','Oops! It seems this email address has been used before');
+            //         this.props.navigation.navigate("Authentication");
+            //     }
+            // }catch(e){
+            //     console.log(e);
+            // }
+            const response = {
+                data:{
+                    status:'success',
+                    userToken:'1'
+                }
+            }
+            if(response.data.status==="success"){
+                await AsyncStorage.setItem('userToken', response.data.userToken);
+                this.props.navigation.navigate('Authentication');
+            }
         }
     }
 
@@ -55,14 +69,15 @@ class Register extends Component{
         return(
         <KeyboardAvoidingView 
             style={styles.container} 
-            behavior="padding"
-            keyboardVerticalOffset = {Header.HEIGHT + 10} > 
+            behavior={Platform.OS === "ios" ? "padding" : "undefined"}
+            keyboardVerticalOffset={Header.HEIGHT +20} > 
             {/* avatar view */}
             <Image style={styles.avatar} source={require('../public/unLoggedInProfile.png')}/>
             <Text style={styles.msg}>Register your account</Text>
             {/* avatart upload button */}
             <ScrollView style={styles.content} >
                 <TextInput 
+                    keyboardType='email-address'
                     placeholder="Email"
                     style={styles.inputForm}
                     onChangeText={(email)=>this.setState({email:email})}
@@ -73,6 +88,7 @@ class Register extends Component{
                     placeholder="Password"
                     style={styles.inputForm}
                     onChangeText={(password)=>this.setState({password:password})}
+                    secureTextEntry={true}
                     value={this.state.password}
                     maxLength={20}
                 />
@@ -150,3 +166,5 @@ submitText:{
 })
 
 export default Register;
+
+

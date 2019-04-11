@@ -6,9 +6,9 @@ import {
     TouchableWithoutFeedback,
     Image,
     TouchableOpacity,
-    AsyncStorage
   } from 'react-native';
 import MasonryList from "react-native-masonry-list";
+import AsyncStorage from '@react-native-community/async-storage';
 // import console = require('console');
 // import axios from 'axios';
 
@@ -98,6 +98,7 @@ class Gallery extends Component{
                     <MasonryList
                         images={this.state.galleryList}
                         columns={3}
+                        backgroundColor={"#c0e2f7"}
                         renderIndividualHeader={(data) => {
                             return (
                                 <TouchableWithoutFeedback>

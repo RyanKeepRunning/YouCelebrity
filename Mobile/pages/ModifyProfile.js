@@ -12,7 +12,7 @@ import {
     Navigator,
     TextInput,
     KeyboardAvoidingView,
-    ScrollView
+    ScrollView,
     } from 'react-native';
 // import axios from "axios";
 import {Header} from 'react-navigation';
@@ -61,7 +61,7 @@ class ModifyProfile extends Component {
         <KeyboardAvoidingView 
             keyboardVerticalOffset = {Header.HEIGHT+20}
             style={styles.container} 
-            behavior="padding" > 
+            behavior={Platform.OS === "ios" ? "padding" : undefined} > 
             {/* avatar view */}
             <Image style={styles.avatar} source={{uri: 'https://cdn140.picsart.com/268503922008211.png?r1024x1024'}}/>
             <ScrollView style={styles.content}>

@@ -7,9 +7,10 @@ import {
     TextInput,
     KeyboardAvoidingView,
     ScrollView,
-    AsyncStorage
+    Platform
   } from 'react-native';
 import {Header} from 'react-navigation';
+import AsyncStorage from '@react-native-community/async-storage';
 // import axios from 'axios';  
 
 class Login extends Component{
@@ -58,8 +59,8 @@ class Login extends Component{
     render(){
         return(
         <KeyboardAvoidingView 
-            style={styles.container} 
-            behavior="padding"
+            style={styles.container}
+            behavior={Platform.OS === "ios" ? "padding" : undefined}
             keyboardVerticalOffset = {Header.HEIGHT + 10} > 
             {/* avatar view */}
             <Image style={styles.avatar} source={require('../public/unLoggedInProfile.png')}/>
@@ -67,6 +68,7 @@ class Login extends Component{
             {/* avatart upload button */}
             <ScrollView style={styles.content} >
                 <TextInput 
+                    keyboardType='email-address'
                     placeholder="Email"
                     style={styles.inputForm}
                     onChangeText={(email)=>this.setState({email:email})}
@@ -77,6 +79,7 @@ class Login extends Component{
                     placeholder="Password"
                     style={styles.inputForm}
                     onChangeText={(password)=>this.setState({password:password})}
+                    secureTextEntry={true}
                     value={this.state.password}
                     maxLength={20}
                 />
