@@ -6,8 +6,8 @@ import {
   Image,
   TouchableOpacity,
   Alert,
-  AsyncStorage
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 // import { createAppContainer, createStackNavigator} from 'react-navigation';
 
 

@@ -4,8 +4,8 @@ import {
     View,
     ActivityIndicator,
     StatusBar,
-    AsyncStorage
   } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 class Authentication extends Component{
     constructor(props){

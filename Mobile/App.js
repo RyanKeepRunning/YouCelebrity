@@ -14,6 +14,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import SelectImg from './pages/SelectImg';
+import Result from './pages/Result';
 
 class App extends React.Component {
   constructor(props){
@@ -105,8 +106,8 @@ const getTabBarIcon = (navigation, focused) => {
 }
 
 let HomeStack = createStackNavigator({
-  Home,SelectImg
-});
+  Home,SelectImg,Result
+},{initialRouteName:'Home'});
 let ProfileStack = createStackNavigator({
   Profile,ModifyProfile
 });
@@ -123,7 +124,13 @@ const MembershipSwitch = createSwitchNavigator({
 })
 
 const TabNavigator = createBottomTabNavigator({
-  Home:{screen:HomeStack},
+  Home:{screen:HomeStack,navigationOptions:{
+    tabBarLabel:'Home',
+    tabBarOnPress: ({navigation, defaultHandler}) => {
+      navigation.navigate('Home');
+      defaultHandler();
+    },
+  }},
   Gallery:{screen:GalleryStack},
   Profile:{screen:MembershipSwitch}
 },{

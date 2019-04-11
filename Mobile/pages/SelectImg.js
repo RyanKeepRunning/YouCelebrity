@@ -52,8 +52,17 @@ class SelectImg extends Component{
     }
     handleSubmit = ()=>{
         Alert.alert(`Calculating using ${this.props.navigation.getParam('model', "")} model! Details:${this.state.imgSource.uri}`);
+        //TODO send photo to the server
+        //TODO await until receive the feedback from server
+        //Then come to Result page.
+        const response = {data:{
+          img:"http://p1.pstatp.com/large/212f000013ad64823987",
+          name:"Will Smith",
+          similarity:"60%"
+        }}
+        this.props.navigation.navigate('Result',{result:response.data});
     }
-    
+    //why it is relevant. reference. not just what you gonna do, why it is the right/good way todo the testing.
     render(){
         console.log(this.state.imgSource);
         return(

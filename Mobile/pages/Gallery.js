@@ -6,9 +6,9 @@ import {
     TouchableWithoutFeedback,
     Image,
     TouchableOpacity,
-    AsyncStorage
   } from 'react-native';
 import MasonryList from "react-native-masonry-list";
+import AsyncStorage from '@react-native-community/async-storage';
 // import console = require('console');
 // import axios from 'axios';
 
