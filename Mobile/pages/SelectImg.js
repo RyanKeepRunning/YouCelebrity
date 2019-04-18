@@ -31,48 +31,52 @@ class SelectImg extends Component{
               uri:"",
               type:"",
               name:"",
-              data:""
+              data:"",
+              token:""
             },
             isLoading:false,
         }
     }
     
-    selectPhotoTapped = () =>{
-        const options = {
-          quality: 1.0,
-          maxWidth: 500,
-          maxHeight: 500,
-          storageOptions: {
-            skipBackup: true,
-          },
-        };
-    
-        ImagePicker.showImagePicker(options, (response) => {
-          console.log('Response = ', response);
-    
-          if (response.didCancel) {
-            console.log('User cancelled photo picker');
-          } else if (response.error) {
-            console.log('ImagePicker Error: ', response.error);
-          } else if (response.customButton) {
-            console.log('User tapped custom button: ', response.customButton);
-          } else {
-            let source = {
-              uri: response.uri,
-              type: response.type,
-              name: response.fileName,
-              data: response.data,
-              model: this.props.navigation.getParam('model',"") //the corresponding model: celebrity or anime
-            };
-    
-            // You can also display the image using data:
-            // let source = { uri: 'data:image/jpeg;base64,' + response.data };
-    
-            this.setState({
-              imgSource: source,
-            });
-          }
-        });
+    selectPhotoTapped = async () =>{
+      let token = await AsyncStorage.getItem('userToken');
+      if(!token){
+        token = "guest";
+      }
+      const options = {
+        quality: 1.0,
+        maxWidth: 500,
+        maxHeight: 500,
+        storageOptions: {
+          skipBackup: true,
+        },
+      };
+  
+      ImagePicker.showImagePicker(options, (response) => {
+        console.log('Response = ', response);
+  
+        if (response.didCancel) {
+          console.log('User cancelled photo picker');
+        } else if (response.error) {
+          console.log('ImagePicker Error: ', response.error);
+        } else if (response.customButton) {
+          console.log('User tapped custom button: ', response.customButton);
+        } else {
+          let source = {
+            uri: response.uri,
+            type: response.type,
+            name: response.fileName,
+            data: response.data,
+            model: this.props.navigation.getParam('model',""), //the corresponding model: celebrity or anime
+            token: token
+          };
+          // You can also display the image using data:
+          // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+          this.setState({
+            imgSource: source,
+          });
+        }
+      });
     }
 
     handleSubmit = async ()=>{
