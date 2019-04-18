@@ -8,17 +8,35 @@ import {
     TouchableWithoutFeedback,
     Alert,
     TouchableOpacity,
-    PixelRatio
+    PixelRatio,
+    ActivityIndicator,
   } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
+
+function getFakeResponse() {
+  return new Promise(function(resolve) {
+    setTimeout(() => resolve({data:{
+      img:"http://www.gstatic.com/tv/thumb/persons/1650/1650_v9_ba.jpg",
+      name:"Will Smith",
+      similarity:"60%"
+    }}), 4000);
+  });
+}
 
 class SelectImg extends Component{
     constructor(props){
         super(props);
         this.state={
-            imgSource:""
+            imgSource:{
+              uri:"",
+              type:"",
+              name:"",
+              data:""
+            },
+            isLoading:false,
         }
     }
+    
     selectPhotoTapped = () =>{
         const options = {
           quality: 1.0,
@@ -39,7 +57,13 @@ class SelectImg extends Component{
           } else if (response.customButton) {
             console.log('User tapped custom button: ', response.customButton);
           } else {
-            let source = { uri: response.uri };
+            let source = {
+              uri: response.uri,
+              type: response.type,
+              name: response.fileName,
+              data: response.data,
+              model: this.props.navigation.getParam('model',"") //the corresponding model: celebrity or anime
+            };
     
             // You can also display the image using data:
             // let source = { uri: 'data:image/jpeg;base64,' + response.data };
@@ -50,17 +74,34 @@ class SelectImg extends Component{
           }
         });
     }
-    handleSubmit = ()=>{
-        Alert.alert(`Calculating using ${this.props.navigation.getParam('model', "")} model! Details:${this.state.imgSource.uri}`);
-        //TODO send photo to the server
-        //TODO await until receive the feedback from server
-        //Then come to Result page.
-        const response = {data:{
-          img:"http://p1.pstatp.com/large/212f000013ad64823987",
-          name:"Will Smith",
-          similarity:"60%"
-        }}
-        this.props.navigation.navigate('Result',{result:response.data});
+
+    handleSubmit = async ()=>{
+      if(this.state.imgSource.uri === ""){
+        Alert.alert('Hey mate! You should select a photo first!');
+      }else{
+        this.setState({isLoading:true});
+        const imageData = new FormData();
+        imageData.append('name', 'image');
+        imageData.append('image',this.state.imgSource);
+
+        //TODO: Gao xiong! CALL your firebase api to upload the imageData to the backend server. (I've made this method async)
+        //See line 47 to see the details of imageData.
+        //Notice: use await/then to let the UI wait until it fetches the response from the backend server.
+
+        // The reponse would be similar to this.
+        // const response = {data:{
+        //   img:"http://www.gstatic.com/tv/thumb/persons/1650/1650_v9_ba.jpg",
+        //   name:"Will Smith",
+        //   similarity:"60%"
+        // }}
+        getFakeResponse().then(response => {
+          this.setState({
+            isLoading: false,
+          });
+          this.props.navigation.navigate('Result',{result:response.data});
+        });
+        // this.props.navigation.navigate('Result',{result:response.data});
+      }
     }
     //why it is relevant. reference. not just what you gonna do, why it is the right/good way todo the testing.
     render(){
@@ -74,13 +115,14 @@ class SelectImg extends Component{
                         styles.imgContainer,
                         { marginBottom: 20 },
                     ]}>
-                        {this.state.imgSource===""?
+                        {this.state.imgSource.uri===""?
                             (<Text style={styles.text}>Select an photo</Text>):
-                            (<Image source={this.state.imgSource} style={styles.img} />)
+                            (<Image source={{uri:this.state.imgSource.uri}} style={styles.img} />)
                         }
                         
                     </View>
                 </TouchableWithoutFeedback>
+                {this.state.isLoading?<ActivityIndicator size="large" color="#00BFFF" animating={this.state.ifLoading}/>:null}
                 {this.state.imgSource===""?
                 null:<TouchableOpacity 
                 onPress={()=>this.handleSubmit()}
@@ -101,14 +143,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#c0e2f7',
     },
     msg:{
-        marginTop:50,
+        marginTop:40,
         fontSize:28,
         textAlign:'center',
         color: "#464d59",
         fontWeight: "600"
     },
     imgContainer: {
-        marginTop:70,
+        marginTop:40,
         borderColor: '#b1d3e0',
         borderWidth: 10 / PixelRatio.get(),
         justifyContent: 'center',
@@ -125,7 +167,7 @@ const styles = StyleSheet.create({
         color:"#fff",
     },
     submitButton:{
-        marginTop:10,
+        marginTop:20,
         height:36,
         flexDirection: 'row',
         justifyContent: 'center',
