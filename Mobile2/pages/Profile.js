@@ -41,23 +41,6 @@ class Profile extends Component {
   }
 
   componentDidMount = async ()=>{
-    // try{
-    //   const token = await AsyncStorage.getItem('userToken');
-    //   const response = await axios.get('http://localhost:3333/api/user/getUserInfo/'+token);
-    //   if(response.data.status === "success"){
-    //     this.setState({
-    //       avatar:response.data.avatar,
-    //       name:response.data.name,
-    //       info:response.data.info
-    //     });
-    //   }else{
-    //     Alert.alert('Failure','Fail to load user information, please login again!');
-    //     AsyncStorage.clear();
-    //     this.props.navigation.navigate('Authentication');
-    //   }
-    // }catch(e){
-    //   console.log(e);
-    // }
     const response = {
       data:{
         avatar:'https://cdn140.picsart.com/268503922008211.png?r1024x1024',

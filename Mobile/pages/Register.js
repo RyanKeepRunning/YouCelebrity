@@ -12,6 +12,8 @@ import {
   } from 'react-native';
 import {Header} from 'react-navigation';
 import AsyncStorage from '@react-native-community/async-storage';
+import firebase from "../firebase";
+
 // import axios from 'axios';
 
 class Register extends Component{
@@ -23,46 +25,25 @@ class Register extends Component{
         }
     }
 
-    validateEmail = (email) => {
-        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(email);
-    };
-
     onRegister = async () => {
-        if (!this.validateEmail(this.state.email)) {
-            Alert.alert('Come on man!',"Don't play around! Please input a valid email address!");
-        } else if(this.state.password.length<5){
-            Alert.alert('For safety concern!','Try to set your password longer than 5 mate!')
-        }
-        else {
-            // const postData = {
-            //     email:this.state.email,
-            //     password:this.state.password
-            // }
-            // try{
-            //     const response = await axios.post("http://localhost:3333/api/user/signup",postData);
-            //     if(response.data.status==="success"){
-            //         await AsyncStorage.setItem('userToken', response.data.token);
-            //         Alert.alert('Success','Successfully registered as '+this.state.email);
-            //         this.props.navigation.navigate('Authentication');
-            //     }else{
-            //         Alert.alert('Failure','Oops! It seems this email address has been used before');
-            //         this.props.navigation.navigate("Authentication");
-            //     }
-            // }catch(e){
-            //     console.log(e);
-            // }
-            const response = {
-                data:{
-                    status:'success',
-                    userToken:'1'
-                }
-            }
-            if(response.data.status==="success"){
-                await AsyncStorage.setItem('userToken', response.data.userToken);
-                this.props.navigation.navigate('Authentication');
-            }
-        }
+        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+        .catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log(errorCode);
+            console.log(errorMessage);
+          });
+        await AsyncStorage.setItem('userToken', this.state.email);
+        firebase.firestore().collection("users").doc(this.state.email).set({
+            email: this.state.email,
+            avatar:'null',
+            name: this.state.email,
+            info: 'null',
+          }); 
+        // await AsyncStorage.setItem('userToken', 'abc');
+        // alert("Success Sign Up!")
+        this.props.navigation.navigate('Authentication');
     }
 
     render(){

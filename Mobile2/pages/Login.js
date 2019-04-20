@@ -26,33 +26,6 @@ class Login extends Component{
 
     
     onLogin = async () => {
-        // const postData = {
-        //     email:this.state.email,
-        //     password:this.state.password
-        // }
-        // try{
-        //     const response = await axios.post("http://localhost:3333/api/user/login",postData);
-        //     if(response.data.status === "success"){
-        //         Alert.alert('Success','Yeah! You have successfully logged in as '+this.state.email);
-        //         await AsyncStorage.setItem('userToken', response.data.token);
-        //         this.props.navigation.navigate('Authentication');   
-        //     }else{
-        //         Alert.alert('Failure','Oops! It seems the provided information is not correct!');
-        //         this.props.navigation.navigate('Authentication');
-        //     }
-        // }catch(e){
-        //     console.log(e);
-        // }
-        // const response = {
-        //     data:{
-        //         userToken:'1',
-        //         status:'success'
-        //     }
-        // }
-        // if(response.data.status==='success'){
-        //     AsyncStorage.setItem('userToken', response.data.userToken)   
-        //     this.props.navigation.navigate('Authentication');
-        // }
         console.log(this.state);
         var email = this.state.email 
         firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {

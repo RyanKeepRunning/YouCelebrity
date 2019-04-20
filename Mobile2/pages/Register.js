@@ -44,33 +44,6 @@ class Register extends Component{
         // await AsyncStorage.setItem('userToken', 'abc');
         // alert("Success Sign Up!")
         this.props.navigation.navigate('Authentication');
-        // const postData = {
-        //     email:this.state.email,
-        //     password:this.state.password
-        // }
-        // try{
-        //     const response = await axios.post("http://localhost:3333/api/user/signup",postData);
-        //     if(response.data.status==="success"){
-        //         await AsyncStorage.setItem('userToken', response.data.token);
-        //         Alert.alert('Success','Successfully registered as '+this.state.email);
-        //         this.props.navigation.navigate('Authentication');
-        //     }else{
-        //         Alert.alert('Failure','Oops! It seems this email address has been used before');
-        //         this.props.navigation.navigate("Authentication");
-        //     }
-        // }catch(e){
-        //     console.log(e);
-        // }
-        // const response = {
-        //     data:{
-        //         status:'success',
-        //         userToken:'1'
-        //     }
-        // }
-        // if(response.data.status==="success"){
-        //     await AsyncStorage.setItem('userToken', response.data.userToken);
-        //     this.props.navigation.navigate('Authentication');
-        // }
     }
 
     render(){

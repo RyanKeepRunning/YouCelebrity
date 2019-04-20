@@ -8,8 +8,11 @@ import {
   Alert,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import firebase from "../firebase";
+
 // import { createAppContainer, createStackNavigator} from 'react-navigation';
 
+const db = firebase.firestore();
 
 class Profile extends Component {
   constructor(props){
@@ -36,23 +39,6 @@ class Profile extends Component {
   }
 
   componentDidMount = async ()=>{
-    // try{
-    //   const token = await AsyncStorage.getItem('userToken');
-    //   const response = await axios.get('http://localhost:3333/api/user/getUserInfo/'+token);
-    //   if(response.data.status === "success"){
-    //     this.setState({
-    //       avatar:response.data.avatar,
-    //       name:response.data.name,
-    //       info:response.data.info
-    //     });
-    //   }else{
-    //     Alert.alert('Failure','Fail to load user information, please login again!');
-    //     AsyncStorage.clear();
-    //     this.props.navigation.navigate('Authentication');
-    //   }
-    // }catch(e){
-    //   console.log(e);
-    // }
     const response = {
       data:{
         avatar:'https://cdn140.picsart.com/268503922008211.png?r1024x1024',
@@ -61,14 +47,26 @@ class Profile extends Component {
         status: 'success'
       }
     }
-    
-    if(response.data.status === "success"){
-      this.setState({
-        avatar:response.data.avatar,
-        name:response.data.name,
-        info:response.data.info
-      });
-    }
+
+    AsyncStorage.getItem('userToken').then((value) => {
+      this.setState({ 'email': value })
+      if(!!value){
+        console.log(this.state.email)
+        db.collection('/users').doc(this.state.email).get().then(doc => {
+        if (!doc.exists) {
+          console.log('No such document!');
+        } else {
+          console.log('Document data:', doc.data()['email']);
+          this.setState({ 
+            'email': value, 
+            'name' : doc.data()['name'],
+            'info' : doc.data()['info']
+          })
+        }
+      }).catch(err => {
+        console.log('Error getting document', err);
+      })};
+    });
   }
 
   render() {
@@ -105,13 +103,6 @@ class Profile extends Component {
   }
 }
 
-// const RootStack = createStackNavigator(
-//   {
-//     Profile: Profile,
-//     ModifyProfile: ModifyProfile,
-//   }
-// );
-// const AppContainer = createAppContainer(RootStack);
 
 const styles = StyleSheet.create({
   container:{
