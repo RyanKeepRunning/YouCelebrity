@@ -63,7 +63,7 @@ class Register extends Component{
                     style={styles.inputForm}
                     onChangeText={(email)=>this.setState({email:email})}
                     value={this.state.email}
-                    maxLength={15}
+                    maxLength={30}
                 />
                 <TextInput
                     placeholder="Password"
@@ -71,7 +71,7 @@ class Register extends Component{
                     onChangeText={(password)=>this.setState({password:password})}
                     secureTextEntry={true}
                     value={this.state.password}
-                    maxLength={20}
+                    maxLength={30}
                 />
                 <TouchableOpacity
                     style={styles.submitButton}

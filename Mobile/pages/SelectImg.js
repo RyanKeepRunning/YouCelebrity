@@ -12,11 +12,12 @@ import {
     ActivityIndicator,
   } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
+import AsyncStorage from '@react-native-community/async-storage';
 
 function getFakeResponse() {
   return new Promise(function(resolve) {
     setTimeout(() => resolve({data:{
-      img:"http://www.gstatic.com/tv/thumb/persons/1650/1650_v9_ba.jpg",
+      imgSet:["http://www.gstatic.com/tv/thumb/persons/1650/1650_v9_ba.jpg","https://www.thenational.ae/image/policy:1.782205:1539936253/na20-WIllSmith.jpg?f=16x9&w=1200&$p$f$w=34b487a"],
       name:"Will Smith",
       similarity:"60%"
     }}), 4000);

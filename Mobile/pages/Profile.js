@@ -21,6 +21,7 @@ class Profile extends Component {
       avatar:"",
       name:"",
       info:"",
+      email:""
     }
   }
   static navigationOptions = { header: null }
@@ -34,6 +35,7 @@ class Profile extends Component {
     ])
   }
   onLogout= async ()=>{
+    //TODO You also need to logout at the backend!
     await AsyncStorage.clear();
     this.props.navigation.navigate('Authentication');
   }
@@ -60,7 +62,8 @@ class Profile extends Component {
           this.setState({ 
             'email': value, 
             'name' : doc.data()['name'],
-            'info' : doc.data()['info']
+            'info' : doc.data()['info'],
+            'avatar':'https://cdn140.picsart.com/268503922008211.png?r1024x1024' //Hardcoded for test purpose. Modify it later.
           })
         }
       }).catch(err => {
@@ -83,7 +86,7 @@ class Profile extends Component {
               <TouchableOpacity 
               style={styles.buttonContainer}
               onPress={()=>{
-                this.props.navigation.navigate('ModifyProfile');
+                this.props.navigation.navigate('ModifyProfile',{currentAvatar:this.state.avatar,token:this.state.email});
               }}
               >
                 <Text style={styles.text}>Modify Profile</Text>  

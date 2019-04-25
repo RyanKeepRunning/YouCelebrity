@@ -5,20 +5,41 @@ import {
     Text,
     View,
     Image,
+    TouchableOpacity
   } from 'react-native';
 
 class Result extends Component{
     constructor(props){
         super(props);
+        this.state = {
+            checkGraph: 'img'
+        }
+    }
+    onToggleGraph = ()=>{
+        let checkGraph = this.state.checkGraph === "img"? "photo":"img";
+        this.setState({
+            checkGraph:checkGraph
+        })
     }
 
     render(){
         const result = this.props.navigation.getParam('result',{});
-        console.log(result);
+        let shownGraph;
+        console.log(this.state.checkGraph);
+        if(this.state.checkGraph === 'img'){
+            shownGraph = result.imgSet[0];
+            console.log(shownGraph);
+        }else{
+            shownGraph = result.imgSet[1];
+        }
         return(
             <View style={styles.container}>
-                <Text style={styles.msg}>Result</Text>
-                <Image source={{uri:result.img}} style={styles.exampleImg} />
+                <TouchableOpacity
+                    onPress={()=>this.onToggleGraph()}
+                    style={styles.toggleButton}>
+                    <Text style={styles.toggleButtonText}>{this.state.checkGraph==="img"? "Check the original photo":"Check the result"}</Text>
+                </TouchableOpacity>
+                <Image source={{uri:shownGraph}} style={styles.exampleImg} />
                 <Text style={styles.text}>{result.name}</Text>
                 <Text style={styles.text}>Similarity: {result.similarity}</Text>
             </View>
@@ -55,6 +76,26 @@ const styles = StyleSheet.create({
         textAlign:'center',
         color: "#464d59",
         fontWeight: "600"
+    },
+    toggleButton:{
+        height: 60,
+        borderColor: '#00BFFF',
+        borderWidth: 1,
+        marginLeft:30,
+        marginRight:30,
+        marginTop:34,
+        marginBottom:10,
+        borderRadius:30,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingLeft:10,
+        paddingRight:10,
+        backgroundColor:'#00BFFF'
+    },
+    toggleButtonText:{
+        color:'#fff',
+        fontSize:20,
     }
   });
 

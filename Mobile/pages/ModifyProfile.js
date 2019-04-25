@@ -16,27 +16,80 @@ import {
     } from 'react-native';
 // import axios from "axios";
 import {Header} from 'react-navigation';
+import ImagePicker from 'react-native-image-picker';
 
 class ModifyProfile extends Component {
     constructor(props){
         super(props);
         this.state={
-            avatar:"",
             name:"",
             info:"",
+            token:"",
+            imgSource:{
+                uri:"",
+                type:"",
+                name:"",
+                data:"",
+              }
         }
     }
 
     async componentDidMount(){
-
+        this.setState({imgSource:{
+            uri: this.props.navigation.getParam('currentAvatar',""),
+            type:"",
+            name:"",
+            data:"",
+            },
+            token: this.props.navigation.getParam('token',"")});
     }
 
+    selectPhotoTapped = async () =>{
+        
+        const options = {
+          quality: 1.0,
+          maxWidth: 500,
+          maxHeight: 500,
+          storageOptions: {
+            skipBackup: true,
+          },
+        };
+    
+        ImagePicker.showImagePicker(options, (response) => {
+          console.log('Response = ', response);
+    
+          if (response.didCancel) {
+            console.log('User cancelled photo picker');
+          } else if (response.error) {
+            console.log('ImagePicker Error: ', response.error);
+          } else if (response.customButton) {
+            console.log('User tapped custom button: ', response.customButton);
+          } else {
+            let source = {
+              uri: response.uri,
+              type: response.type,
+              name: response.fileName,
+              data: response.data,
+            };
+            // You can also display the image using data:
+            // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+            this.setState({
+              imgSource: source,
+            });
+          }
+        });
+      }
+
     onHandleSubmit= async()=>{
-        let userId = 1;
         const {goBack} = this.props.navigation;
+        // Notification: Check if the postData.avatar.data is "" to see whether you need to update the avatar in the database.
+        const imageData = new FormData();
+        imageData.append('name', 'image');
+        imageData.append('image',this.state.imgSource);
+
         const postData = {
-            userId: userId,
-            avatar:this.state.avatar,
+            token: this.state.token,
+            avatar:imageData,
             name:this.state.name,
             info:this.state.info
         }
@@ -55,6 +108,7 @@ class ModifyProfile extends Component {
         Alert.alert('Success','Profile was successfully modified!');
         goBack();
     }
+    //this.props.navigation.getParam('currentAvatar',"")
 
     render(){
         return(
@@ -63,7 +117,10 @@ class ModifyProfile extends Component {
             style={styles.container} 
             behavior={Platform.OS === "ios" ? "padding" : undefined} > 
             {/* avatar view */}
-            <Image style={styles.avatar} source={{uri: 'https://cdn140.picsart.com/268503922008211.png?r1024x1024'}}/>
+            <TouchableHighlight onPress={() => this.selectPhotoTapped()}>
+                {this.state.imgSource.uri === ""? <Image style={styles.avatar} source={require('../public/unLoggedInProfile.png')}/>:
+                <Image style={styles.avatar} source={{uri: this.state.imgSource.uri }} />}
+            </TouchableHighlight>
             <ScrollView style={styles.content}>
                 <TextInput 
                     placeholder="Your new name"
