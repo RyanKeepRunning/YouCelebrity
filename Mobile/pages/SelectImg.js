@@ -13,16 +13,35 @@ import {
   } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import AsyncStorage from '@react-native-community/async-storage';
+import firebase from "../firebase";
+// import { ENGINE_METHOD_NONE } from 'constants';
 
-function getFakeResponse() {
+
+
+var db = firebase.firestore();
+
+// function getResponse() {
+//   return new Promise(function(resolve) {
+//     setTimeout(() => resolve({data:{
+//       imgSet:["http://www.gstatic.com/tv/thumb/persons/1650/1650_v9_ba.jpg","https://www.thenational.ae/image/policy:1.782205:1539936253/na20-WIllSmith.jpg?f=16x9&w=1200&$p$f$w=34b487a"],
+//       name:"Will Smith",
+//       similarity:"60%"
+//     }}), 4000);
+//   });
+// }
+
+
+function getResponse() {
   return new Promise(function(resolve) {
-    setTimeout(() => resolve({data:{
-      imgSet:["http://www.gstatic.com/tv/thumb/persons/1650/1650_v9_ba.jpg","https://www.thenational.ae/image/policy:1.782205:1539936253/na20-WIllSmith.jpg?f=16x9&w=1200&$p$f$w=34b487a"],
-      name:"Will Smith",
-      similarity:"60%"
-    }}), 4000);
+    setTimeout(() => resolve(result_data), 4000);
   });
 }
+
+const sleep = (milliseconds) => {
+  return new Promise(resolve => setTimeout(resolve, milliseconds))
+}
+
+var testImg
 
 class SelectImg extends Component{
     constructor(props){
@@ -38,8 +57,11 @@ class SelectImg extends Component{
             isLoading:false,
         }
     }
-    
+
+
     selectPhotoTapped = async () =>{
+      console.log('------------');
+
       let token = await AsyncStorage.getItem('userToken');
       if(!token){
         token = "guest";
@@ -79,32 +101,67 @@ class SelectImg extends Component{
         }
       });
     }
-
+    
     handleSubmit = async ()=>{
       if(this.state.imgSource.uri === ""){
         Alert.alert('Hey mate! You should select a photo first!');
       }else{
-        this.setState({isLoading:true});
-        const imageData = new FormData();
-        imageData.append('name', 'image');
-        imageData.append('image',this.state.imgSource);
+        AsyncStorage.getItem('userToken').then((value) => {
+          this.setState({ 
+            email: value,
+            isLoading:true
+           });
+          console.log("this.state.email: ",this.state.email);
+          
+          var img = this.state.imgSource.data  // use the Blob or File API
+          testImg = img
+
+        //will modify after the anime model finished 
+          var upload_data = { base64: img }
+          db.collection('imgs').doc('img').set(upload_data);
+          console.log('test img uploaded! ');
+
+          });
+
+          var result_data = {}
+          await sleep(40000).then(()=>{
+            db.collection('output').doc('output').get().then(docSnapshot => {
+              let Snapdata = docSnapshot.data();
+              result_data = {
+                testImg:Snapdata['img']['_binaryString'],
+                detectedImg:Snapdata['celebrity']['_binaryString'],
+                name:Snapdata['predict_name'],
+                similarity:Snapdata['predict_score']
+              }
+              console.log(result_data);
+
+              var upload_data = { 
+                base64: Snapdata['celebrity']['_binaryString'],
+                name:Snapdata['predict_name'],
+                similarity:Snapdata['predict_score'] }
+              
+              db.collection(this.state.email).add(upload_data).then(ref => {
+                console.log('Added document with ID: ', ref.id);
+              });
+              console.log('test img recorded into history')
+    
+              this.props.navigation.navigate('Result',{result:result_data});
+              db.collection('output').doc('output').delete();
+              console.log("output data deleted.")
+            }).catch(err => {
+              console.log('Error getting document', err);
+            });
+          })
+         
+          // this.props.navigation.navigate('Result',{result:result_data});
+          // const imageData = new FormData();
+          // imageData.append('name', 'image');
+          // imageData.append('image',this.state.imgSource);
 
         //TODO: Gao xiong! CALL your firebase api to upload the imageData to the backend server. (I've made this method async)
         //See line 47 to see the details of imageData.
         //Notice: use await/then to let the UI wait until it fetches the response from the backend server.
-
-        // The reponse would be similar to this.
-        // const response = {data:{
-        //   img:"http://www.gstatic.com/tv/thumb/persons/1650/1650_v9_ba.jpg",
-        //   name:"Will Smith",
-        //   similarity:"60%"
-        // }}
-        getFakeResponse().then(response => {
-          this.setState({
-            isLoading: false,
-          });
-          this.props.navigation.navigate('Result',{result:response.data});
-        });
+        
         // this.props.navigation.navigate('Result',{result:response.data});
       }
     }

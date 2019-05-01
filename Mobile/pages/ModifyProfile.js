@@ -17,6 +17,10 @@ import {
 // import axios from "axios";
 import {Header} from 'react-navigation';
 import ImagePicker from 'react-native-image-picker';
+import firebase from "../firebase";
+
+
+var db = firebase.firestore();
 
 class ModifyProfile extends Component {
     constructor(props){
@@ -94,17 +98,11 @@ class ModifyProfile extends Component {
             info:this.state.info
         }
         console.log(postData);
-        // try{
-        //     const response = await axios.post("http://localhost:3333/api/modifyProfile/"+userId,postData);
-        //     if(response.data.status === 'success'){
-        //         Alert.alert('Success','Profile was successfully modified!');
-        //         goBack();
-        //     }else{
-        //         Alert.alert('Failure','Oops! Something went wrong! Please try again!');
-        //     }
-        // }catch(e){
-        //     console.log(e);
-        // }
+        db.collection('/users').doc(this.state.email).update(postData).then(()=>{
+            alert('Success','Profile was successfully modified!');
+        }).catch(() => {
+            alert('Failure','Oops! Something went wrong! Please try again!');
+        });
         Alert.alert('Success','Profile was successfully modified!');
         goBack();
     }

@@ -9,8 +9,11 @@ import {
   } from 'react-native';
 import MasonryList from "react-native-masonry-list";
 import AsyncStorage from '@react-native-community/async-storage';
-// import console = require('console');
-// import axios from 'axios';
+import firebase from "../firebase";
+
+
+
+var db = firebase.firestore();
 
 class Gallery extends Component{
     constructor(props){
@@ -24,27 +27,29 @@ class Gallery extends Component{
     static navigationOptions = { header: null }
 
     async componentDidMount(){
-
+        console.log("--------------------------------")
         this.subs = [
             this.props.navigation.addListener('didFocus', async () => {
                 const userToken = await AsyncStorage.getItem('userToken');
                 console.log(userToken);
+                
                 if(userToken){
+                    var galleryList = []
+                    await db.collection(userToken).get().then(doc => {
+                        detectedHistory = doc.docs
+                        detectedHistory.forEach(detectedImg => {
+                            ImgInfo = {
+                                name:detectedImg.data()['name'],
+                                similarity:detectedImg.data()['similarity'],
+                                uri:"data:image/png;base64,"+detectedImg.data()['base64']
+                            }
+                            galleryList.push(ImgInfo)
+                        })
+                    })
                     const response = {
                         data: {
                             avatar:"https://cdn140.picsart.com/268503922008211.png?r1024x1024",
-                            galleryList: [
-                                {name:"Will Smith",similarity:"60%",uri:"http://www.gstatic.com/tv/thumb/persons/1650/1650_v9_ba.jpg"},
-                                {name:"Pikachu",similarity:"50%",uri:"http://p1.pstatp.com/large/212f000013ad64823987"},
-                                {name:"Pikachu",similarity:"50%",uri:"http://p1.pstatp.com/large/212f000013ad64823987"},
-                                {name:"Pikachu",similarity:"50%",uri:"http://p1.pstatp.com/large/212f000013ad64823987"},
-                                {name:"Pikachu",similarity:"50%",uri:"http://p1.pstatp.com/large/212f000013ad64823987"},
-                                {name:"Pikachu",similarity:"50%",uri:"http://p1.pstatp.com/large/212f000013ad64823987"},
-                                {name:"Pikachu",similarity:"50%",uri:"http://p1.pstatp.com/large/212f000013ad64823987"},
-                                {name:"Pikachu",similarity:"50%",uri:"http://p1.pstatp.com/large/212f000013ad64823987"},
-                                {name:"Pikachu",similarity:"50%",uri:"http://p1.pstatp.com/large/212f000013ad64823987"},
-                                {name:"Pikachu",similarity:"50%",uri:"http://p1.pstatp.com/large/212f000013ad64823987"},
-                            ]
+                            galleryList: galleryList
                         }
                     }
                     this.setState({galleryList:response.data.galleryList,avatar:response.data.avatar,isLoggedIn:true});
@@ -53,28 +58,6 @@ class Gallery extends Component{
                 }
             }),
         ];
-
-        // try{
-        //     const response = await axios.get("http://localhost:3333/api/getGalleryList/"+userToken);
-        //     if(response.data.status==="success"){
-        //         const galleryList = response.data.galleryList;
-        //         galleryList.map(function(item,index){
-        //             item.key = index;
-        //             item.renderFooter = data =>{
-        //                 return(<View style={styles.item}>
-        //                     <Text style={styles.name}>{data.name}</Text>
-        //                     <Text style={styles.name}>{data.similarity}</Text>
-        //                     <Text style={styles.name}>similarity</Text>
-        //                 </View>)
-        //             }
-        //         })
-        //         this.setState({
-        //             galleryList
-        //         })
-        //     }
-        // }catch(e){
-        //     console.log(e);
-        // }
     }
 
     componentWillUnmount() {
@@ -86,7 +69,7 @@ class Gallery extends Component{
     }
 
     render() {
-        console.log(this.state);
+       
         if(this.state.isLoggedIn){
             return (
                 <View
@@ -95,6 +78,9 @@ class Gallery extends Component{
                     <View style={[styles.header, styles.mobileHeader, { paddingTop: 20 }]}>
                         <Text style={styles.title}>Gallery</Text>
                     </View>
+                    {/* <Image
+                        source={{ uri: this.state.galleryList[0].uri }}
+                        style={styles.userPic} /> */}
                     <MasonryList
                         images={this.state.galleryList}
                         columns={3}

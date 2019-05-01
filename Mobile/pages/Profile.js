@@ -50,11 +50,12 @@ class Profile extends Component {
       }
     }
 
-    AsyncStorage.getItem('userToken').then((value) => {
-      this.setState({ 'email': value })
-      if(!!value){
-        console.log(this.state.email)
-        db.collection('/users').doc(this.state.email).get().then(doc => {
+    await AsyncStorage.getItem('userToken').then((value) => {
+      
+      if(value){
+        console.log(value)
+
+        db.collection('/users').doc(value).get().then(doc => {
         if (!doc.exists) {
           console.log('No such document!');
         } else {
@@ -68,7 +69,10 @@ class Profile extends Component {
         }
       }).catch(err => {
         console.log('Error getting document', err);
-      })};
+      })}
+      else{
+        console.log("no user logged!")
+      }
     });
   }
 

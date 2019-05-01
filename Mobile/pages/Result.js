@@ -14,24 +14,30 @@ class Result extends Component{
         this.state = {
             checkGraph: 'img'
         }
+        console.log("this is result page")
+
     }
     onToggleGraph = ()=>{
         let checkGraph = this.state.checkGraph === "img"? "photo":"img";
+        console.log(checkGraph)
         this.setState({
-            checkGraph:checkGraph
+            checkGraph:checkGraph,
         })
     }
 
     render(){
         const result = this.props.navigation.getParam('result',{});
-        let shownGraph;
+        console.log("this is result page's reslut:  ", result)
+        var shownGraph;
         console.log(this.state.checkGraph);
         if(this.state.checkGraph === 'img'){
-            shownGraph = result.imgSet[0];
-            console.log(shownGraph);
+            // shownGraph = result.imgSet[0];
+            shownGraph = result.detectedImg
         }else{
-            shownGraph = result.imgSet[1];
+            shownGraph = result.testImg
+            // shownGraph = result.imgSet[1];
         }
+        console.log(shownGraph)
         return(
             <View style={styles.container}>
                 <TouchableOpacity
@@ -39,7 +45,7 @@ class Result extends Component{
                     style={styles.toggleButton}>
                     <Text style={styles.toggleButtonText}>{this.state.checkGraph==="img"? "Check the original photo":"Check the result"}</Text>
                 </TouchableOpacity>
-                <Image source={{uri:shownGraph}} style={styles.exampleImg} />
+                <Image source={{uri: `data:image/gif;base64,${shownGraph}`}} style={styles.exampleImg} />
                 <Text style={styles.text}>{result.name}</Text>
                 <Text style={styles.text}>Similarity: {result.similarity}</Text>
             </View>
