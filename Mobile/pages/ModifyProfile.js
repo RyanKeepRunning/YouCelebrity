@@ -8,6 +8,8 @@ import {
     Image,
     Button,
     TouchableOpacity,
+    TouchableHighlight,
+    TouchableWithoutFeedback,
     Alert,
     Navigator,
     TextInput,
@@ -15,6 +17,7 @@ import {
     ScrollView,
     } from 'react-native';
 // import axios from "axios";
+import AsyncStorage from '@react-native-community/async-storage';
 import {Header} from 'react-navigation';
 import ImagePicker from 'react-native-image-picker';
 import firebase from "../firebase";
@@ -38,51 +41,45 @@ class ModifyProfile extends Component {
         }
     }
 
-    async componentDidMount(){
-        this.setState({imgSource:{
-            uri: this.props.navigation.getParam('currentAvatar',""),
-            type:"",
-            name:"",
-            data:"",
-            },
-            token: this.props.navigation.getParam('token',"")});
+    componentDidMount = () => {
+        this.setState({
+            avatar: this.props.navigation.getParam('currentAvatar',""),
+            email: this.props.navigation.getParam('token',"")
+        });
     }
 
-    selectPhotoTapped = async () =>{
-        
+
+    uploadAvatar = async () => {
+        console.log("thisis uoloadAvatar");
         const options = {
-          quality: 1.0,
-          maxWidth: 500,
-          maxHeight: 500,
+          title: 'Select Avatar',
           storageOptions: {
             skipBackup: true,
+            path: 'images',
           },
         };
-    
         ImagePicker.showImagePicker(options, (response) => {
           console.log('Response = ', response);
-    
+        
           if (response.didCancel) {
-            console.log('User cancelled photo picker');
+            console.log('User cancelled image picker');
           } else if (response.error) {
             console.log('ImagePicker Error: ', response.error);
           } else if (response.customButton) {
             console.log('User tapped custom button: ', response.customButton);
           } else {
-            let source = {
-              uri: response.uri,
-              type: response.type,
-              name: response.fileName,
-              data: response.data,
-            };
+            const source = {data: response.data};
+        
             // You can also display the image using data:
-            // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+            // const source = { uri: 'data:image/jpeg;base64,' + response.data };
             this.setState({
-              imgSource: source,
+              avatar: source.data,
             });
+    
           }
         });
       }
+    
 
     onHandleSubmit= async()=>{
         const {goBack} = this.props.navigation;
@@ -91,20 +88,20 @@ class ModifyProfile extends Component {
         imageData.append('name', 'image');
         imageData.append('image',this.state.imgSource);
 
+
         const postData = {
-            token: this.state.token,
-            avatar:imageData,
+            avatar:this.state.avatar,
             name:this.state.name,
             info:this.state.info
         }
+
         console.log(postData);
         db.collection('/users').doc(this.state.email).update(postData).then(()=>{
-            alert('Success','Profile was successfully modified!');
+            Alert.alert('Success','Profile was successfully modified!');
+            this.props.navigation.navigate('Authentication');
         }).catch(() => {
-            alert('Failure','Oops! Something went wrong! Please try again!');
+            Alert.alert('Failure','Oops! Something went wrong! Please try again!');
         });
-        Alert.alert('Success','Profile was successfully modified!');
-        goBack();
     }
     //this.props.navigation.getParam('currentAvatar',"")
 
@@ -115,10 +112,14 @@ class ModifyProfile extends Component {
             style={styles.container} 
             behavior={Platform.OS === "ios" ? "padding" : undefined} > 
             {/* avatar view */}
-            <TouchableHighlight onPress={() => this.selectPhotoTapped()}>
-                {this.state.imgSource.uri === ""? <Image style={styles.avatar} source={require('../public/unLoggedInProfile.png')}/>:
-                <Image style={styles.avatar} source={{uri: this.state.imgSource.uri }} />}
-            </TouchableHighlight>
+            <TouchableWithoutFeedback onPress={() => this.uploadAvatar()}>
+                <Image style={styles.avatar} 
+                    source={
+                        !this.state.avatar ? 
+                        require('../public/unLoggedInProfile.png'):
+                        {uri:`data:image/gif;base64,${this.state.avatar}`}}
+                />
+            </TouchableWithoutFeedback>
             <ScrollView style={styles.content}>
                 <TextInput 
                     placeholder="Your new name"

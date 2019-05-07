@@ -6,7 +6,9 @@ import {
   Image,
   TouchableOpacity,
   Alert,
+  ActivityIndicator
 } from 'react-native';
+import ImagePicker from 'react-native-image-picker';
 import AsyncStorage from '@react-native-community/async-storage';
 import firebase from "../firebase";
 
@@ -14,9 +16,48 @@ import firebase from "../firebase";
 
 const db = firebase.firestore();
 
+function deleteCollection(db, collectionPath, batchSize) {
+  var collectionRef = db.collection(collectionPath);
+  var query = collectionRef.orderBy('__name__').limit(batchSize);
+
+  return new Promise((resolve, reject) => {
+    deleteQueryBatch(db, query, batchSize, resolve, reject);
+  });
+}
+
+function deleteQueryBatch(db, query, batchSize, resolve, reject) {
+  query.get()
+      .then((snapshot) => {
+        // When there are no documents left, we are done
+        if (snapshot.size == 0) {
+          return 0;
+        }
+
+        // Delete documents in a batch
+        var batch = db.batch();
+        snapshot.docs.forEach((doc) => {
+          batch.delete(doc.ref);
+        });
+
+        return batch.commit().then(() => {
+          return snapshot.size;
+        });
+      }).then((numDeleted) => {
+        if (numDeleted === 0) {
+          resolve();
+          return;
+        }
+
+        // Recurse on the next process tick, to avoid
+        // exploding the stack.
+    process.nextTick = setImmediate(() => deleteQueryBatch(db, query, batchSize, resolve, reject));
+      }).catch(reject);    
+}
+
 class Profile extends Component {
   constructor(props){
     super(props);
+
     this.state={
       avatar:"",
       name:"",
@@ -24,77 +65,97 @@ class Profile extends Component {
       email:""
     }
   }
-  static navigationOptions = { header: null }
 
+  static navigationOptions = { header: null }
   onDeleteHistory=()=>{
     Alert.alert('Warning',
     ' You would lose all the records if you delete the history!',
     [
-      {text:'Continue',onPress:()=>console.log('Continue')},
+      {text:'Continue',onPress:()=>deleteCollection(db, this.state.email, 1)},
       {text:'Cancel',style:'cancel',onPress:()=>console.log('History deleted')}
     ])
+    
+
   }
+
   onLogout= async ()=>{
     //TODO You also need to logout at the backend!
     await AsyncStorage.clear();
     this.props.navigation.navigate('Authentication');
   }
 
+ 
+
   componentDidMount = async ()=>{
-    const response = {
-      data:{
-        avatar:'https://cdn140.picsart.com/268503922008211.png?r1024x1024',
-        name:'Ryan',
-        info:'App developer',
-        status: 'success'
-      }
-    }
-
-    await AsyncStorage.getItem('userToken').then((value) => {
-      
-      if(value){
-        console.log(value)
-
-        db.collection('/users').doc(value).get().then(doc => {
-        if (!doc.exists) {
-          console.log('No such document!');
-        } else {
-          console.log('Document data:', doc.data()['email']);
-          this.setState({ 
-            'email': value, 
-            'name' : doc.data()['name'],
-            'info' : doc.data()['info'],
-            'avatar':'https://cdn140.picsart.com/268503922008211.png?r1024x1024' //Hardcoded for test purpose. Modify it later.
-          })
+    this.subs = [
+      this.props.navigation.addListener('didFocus',async ()=>{
+        const response = {
+          data:{
+            avatar:'https://cdn140.picsart.com/268503922008211.png?r1024x1024',
+            name:'Ryan',
+            info:'App developer',
+            status: 'success'
+          }
         }
-      }).catch(err => {
-        console.log('Error getting document', err);
-      })}
-      else{
-        console.log("no user logged!")
-      }
-    });
+    
+        AsyncStorage.getItem('userToken').then((value) => {
+          
+          if(value){
+    
+        db.collection('/users').doc(value).get().then(doc => {
+            if (!doc.exists) {
+              console.log('No such document!');
+            } else {
+              this.setState({ 
+                'email': value, 
+                'name' : doc.data()['name'],
+                'info' : doc.data()['info'],
+                'avatar':doc.data()['avatar'] //Hardcoded for test purpose. Modify it later.
+              })
+            }
+          }).catch(err => {
+            console.log('Error getting document', err);
+          })}
+          else{
+            console.log("no user logged!")
+          }
+        });
+      })
+    ]
+  }
+
+  componentWillUnmount() {
+    this.subs.forEach(sub => sub.remove());
   }
 
   render() {
     return (
       <View style={styles.container}>
-          <View style={styles.header}></View>
-          <Image style={styles.avatar} source={this.state.avatar === ""? 
-            require('../public/unLoggedInProfile.png'):
-            {uri: this.state.avatar}}/>
+      {!this.state.email?
+        <View style={styles.container}>
+        <View style={styles.header}></View>
+        <ActivityIndicator size="large" color="#00BFFF" animating={this.state.ifLoading}/>
+        </View>
+      : <View style={styles.container}>
+        <View style={styles.header}></View>
+            <Image style={styles.avatar} 
+              source={
+                !this.state.avatar? 
+                require('../public/unLoggedInProfile.png'):
+                {uri:`data:image/gif;base64,${this.state.avatar}`}}
+                />
           <View style={styles.body}>
             <View style={styles.bodyContent}>
               <Text style={styles.name}>{this.state.name}</Text>
-              <Text style={styles.info}>{this.state.info}</Text>    
+              <Text style={styles.info}>{this.state.info}</Text> 
               <TouchableOpacity 
-              style={styles.buttonContainer}
-              onPress={()=>{
+                style={styles.buttonContainer}
+                onPress={()=>{
                 this.props.navigation.navigate('ModifyProfile',{currentAvatar:this.state.avatar,token:this.state.email});
-              }}
-              >
-                <Text style={styles.text}>Modify Profile</Text>  
-              </TouchableOpacity>               
+                }}
+                >
+                <Text style={styles.text}>Modify Profile</Text> 
+              </TouchableOpacity> 
               <TouchableOpacity style={styles.buttonContainer}
                 onPress={()=>this.onDeleteHistory()}>
                 <Text style={styles.text}>Delete History</Text> 
@@ -104,7 +165,10 @@ class Profile extends Component {
                 <Text style={styles.text}>Logout</Text> 
               </TouchableOpacity>
             </View>
+          </View>
         </View>
+    }
+
       </View>
     );
   }

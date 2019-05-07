@@ -45,7 +45,7 @@ class Result extends Component{
                     style={styles.toggleButton}>
                     <Text style={styles.toggleButtonText}>{this.state.checkGraph==="img"? "Check the original photo":"Check the result"}</Text>
                 </TouchableOpacity>
-                <Image source={{uri: `data:image/gif;base64,${shownGraph}`}} style={styles.exampleImg} />
+                <Image source={{uri:`data:image/gif;base64,${shownGraph}`}} style={styles.exampleImg} />
                 <Text style={styles.text}>{result.name}</Text>
                 <Text style={styles.text}>Similarity: {result.similarity}</Text>
             </View>

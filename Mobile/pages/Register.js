@@ -26,6 +26,7 @@ class Register extends Component{
     }
 
     onRegister = async () => {
+        if(this.state.email && this.state.password){
         firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
         .catch(function(error) {
             // Handle Errors here.
@@ -43,7 +44,10 @@ class Register extends Component{
           }); 
         // await AsyncStorage.setItem('userToken', 'abc');
         // alert("Success Sign Up!")
-        this.props.navigation.navigate('Authentication');
+        this.props.navigation.navigate('Authentication');}
+        else {
+            Alert.alert("please enter email and password!")
+        }
     }
 
     render(){

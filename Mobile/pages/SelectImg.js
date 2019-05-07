@@ -146,23 +146,15 @@ class SelectImg extends Component{
               console.log('test img recorded into history')
     
               this.props.navigation.navigate('Result',{result:result_data});
+              this.setState({
+                isLoading:false
+              })
               db.collection('output').doc('output').delete();
               console.log("output data deleted.")
             }).catch(err => {
               console.log('Error getting document', err);
             });
           })
-         
-          // this.props.navigation.navigate('Result',{result:result_data});
-          // const imageData = new FormData();
-          // imageData.append('name', 'image');
-          // imageData.append('image',this.state.imgSource);
-
-        //TODO: Gao xiong! CALL your firebase api to upload the imageData to the backend server. (I've made this method async)
-        //See line 47 to see the details of imageData.
-        //Notice: use await/then to let the UI wait until it fetches the response from the backend server.
-        
-        // this.props.navigation.navigate('Result',{result:response.data});
       }
     }
     //why it is relevant. reference. not just what you gonna do, why it is the right/good way todo the testing.

@@ -17,11 +17,12 @@ class Authentication extends Component{
 
     asyncNavigation= async ()=>{
         const userToken = await AsyncStorage.getItem('userToken');
+        // console.log("this is authentication",userToken);
         this.props.navigation.navigate(userToken?'Profile':'Login');
     }
 
     render(){
-        console.log("Authentication");
+        // console.log("Authentication");
         return(
             <View style={styles.container}>
             <ActivityIndicator />

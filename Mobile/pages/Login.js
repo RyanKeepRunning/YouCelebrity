@@ -7,7 +7,8 @@ import {
     TextInput,
     KeyboardAvoidingView,
     ScrollView,
-    Platform
+    Platform,
+    Alert
   } from 'react-native';
 import {Header} from 'react-navigation';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -24,21 +25,36 @@ class Login extends Component{
     }
 
     onLogin = async () => {
+        // console.log(this.state);
+        // var email = this.state.email 
+        // firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then(()=>{
+        //     AsyncStorage.setItem('userToken', this.state.email);
+        //     Alert.alert("Success!");
+        // }).catch(function(error) {
+        //     // Handle Errors here.
+        //     var errorCode = error.code;
+        //     var errorMessage = error.message;
+        //     Alert.alert(errorCode+": "+errorMessage+email);
+        //   });
+        // this.props.navigation.navigate('Authentication');
         console.log(this.state);
         var email = this.state.email 
-        firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            alert(errorCode+": "+errorMessage+email);
-          });
-        console.log("success!")
+        var ifError = false;
+        firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+        .catch(function(error) {
+        // Handle Errors here.
+        ifError=true;
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        alert(errorCode+": "+errorMessage+email);
+        });
+        if(!ifError){
+            await AsyncStorage.setItem('userToken', this.state.email);
+            const userToken = await AsyncStorage.getItem('userToken');
+            console.log(userToken);
+            this.props.navigation.navigate('Authentication');
+        }
         
-        await AsyncStorage.setItem('userToken', this.state.email);
-        
-        const userToken = await AsyncStorage.getItem('userToken');
-        console.log(userToken);
-        this.props.navigation.navigate('Authentication');
     }
 
     onNavigateRegister = () => {
