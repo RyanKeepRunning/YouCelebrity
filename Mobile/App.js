@@ -15,8 +15,10 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import SelectImg from './pages/SelectImg';
 import Result from './pages/Result';
+console.disableYellowBox = true;
 
 class App extends React.Component {
+  
   constructor(props){
     super(props);
     this.state={
@@ -37,51 +39,6 @@ class App extends React.Component {
   }
 
   render() {
-
-    // let tabBarHeight = 80;
-    // return (
-    //   <View style={styles.container}>
-    //     <TabNavigator tabBarStyle={{ height: tabBarHeight}}>
-    //         <TabNavigator.Item
-    //             selected={this.state.selectedTab === 'home'}
-    //             title="Home"
-    //             renderIcon={() => <Image style={{width: 50, height: 50}}
-    //                                      source={{uri: 'https://www.freeiconspng.com/uploads/home-icon-4.png'}} />}
-    //             renderSelectedIcon={() => <Image style={{width: 50, height: 50}}
-    //                                      source={{uri: 'https://www.freeiconspng.com/uploads/home-icons-29.png'}} />}
-    //             badgeText="1"
-    //             onPress={() => this.setState({ selectedTab: 'home' })}>
-    //             <Home/>
-    //         </TabNavigator.Item>
-    //         <TabNavigator.Item
-    //             selected={this.state.selectedTab === 'camera'}
-    //             title="Camera"
-    //             renderIcon={() => <Image style={{width: 50, height: 50}}
-    //                                      source={{uri: 'https://www.freeiconspng.com/minicovers/camera-icon-clip-art--royalty--1.png'}}/>}
-    //             renderSelectedIcon={() => <Image style={{width: 50, height: 50}}
-    //                                      source={{uri: 'https://www.freeiconspng.com/minicovers/big-camera-icon--camera-icons--softiconsm-20.png'}} />}
-    //             onPress={() => this.setState({ selectedTab: 'camera' })}>
-    //             <Camera/>
-    //         </TabNavigator.Item>
-    //         <TabNavigator.Item
-    //             selected={this.state.selectedTab === 'profile'}
-    //             title="Profile"
-    //             renderIcon={() => <Image style={{width: 50, height: 50}}
-    //                                      source={{uri: 'https://www.freeiconspng.com/minicovers/profile-icon-png-user-account-profile-people--6.png'}}/>}
-    //             renderSelectedIcon={() => <Image style={{width: 50, height: 50}}
-    //                                      source={{uri: 'https://www.freeiconspng.com/minicovers/profile-icon-1.png'}} />}
-    //             onPress={() => this.setState({ selectedTab: 'profile' })}>
-    //             {this.state.isUserLoggedIn?
-    //               <Profile screenProps={{handleLogout: this.handleLogout}}/>
-    //               :
-    //               <Login screenProps = {{handleLogin:this.handleLogin}}/>}
-    //         </TabNavigator.Item>
-    //     </TabNavigator>
-    //   </View>
-    // );
-
-    // <AppContainer/>
-
   }
 }
 
