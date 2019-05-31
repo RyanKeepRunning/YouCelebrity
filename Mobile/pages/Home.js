@@ -18,57 +18,11 @@ class Home extends Component{
         }
     }
     handleCelebrityModel=()=>{
-        // Alert.alert('Wait',
-        // 'In which way could we get the photo for ya?',
-        // [
-        // {text:'Library',onPress:()=>console.log('Library')},
-        // {text:'Camera',onPress:()=>console.log('Camera')},
-        // {text:'Cancel',onPress:()=>{}}
-        // ])
-
-        // ImagePicker.showImagePicker(optionsCelebrity, (response) => {
-        //     console.log('Response = ', response);
-            
-        //     if (response.error) {
-        //         console.log('ImagePicker Error: ', response.error);
-        //     } else {
-        //         // const source = { uri: response.uri };
-        //         // You can also display the image using data:
-        //         const source = { uri: 'data:image/jpeg;base64,' + response.data };
-        //         this.setState({
-        //             imgSource: source,
-        //         });
-        //     }
-        // });
         this.props.navigation.navigate('SelectImg',{model:'Celebrity'});
     }
-    handleAnimeModel=()=>{
-        // Alert.alert('Wait',
-        // 'In which way could we get the photo for ya?',
-        // [
-        // {text:'Library',onPress:()=>console.log('Library')},
-        // {text:'Camera',onPress:()=>console.log('Camera')},
-        // {text:'Cancel',onPress:()=>{}}
-        // ])
 
-        // ImagePicker.showImagePicker(optionsAnime, (response) => {
-        //     console.log('Response = ', response);
-          
-        //     if (response.error) {
-        //       console.log('ImagePicker Error: ', response.error);
-        //     } else {
-        //     //   const source = { uri: response.uri };
-          
-        //       // You can also display the image using data:
-        //       const source = { uri: 'data:image/jpeg;base64,' + response.data };
-          
-        //       this.setState({
-        //             imgSource: source,
-        //       });
-        //     }
-        // });
+    handleAnimeModel=()=>{
         this.props.navigation.navigate('SelectImg',{model:'Anime'});
-    
     }
     
     render(){

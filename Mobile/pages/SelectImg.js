@@ -117,10 +117,12 @@ class SelectImg extends Component{
           testImg = img
 
         //will modify after the anime model finished 
-          var upload_data = { base64: img }
+          var upload_data = { 
+            base64: img,
+            model:  this.state.imgSource.model
+          }
           db.collection('imgs').doc('img').set(upload_data);
           console.log('test img uploaded! ');
-
           });
 
           var result_data = {}

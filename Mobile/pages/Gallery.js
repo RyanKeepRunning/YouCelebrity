@@ -12,7 +12,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 import firebase from "../firebase";
 
 
-
 var db = firebase.firestore();
 
 class Gallery extends Component{
@@ -26,15 +25,14 @@ class Gallery extends Component{
     }
     static navigationOptions = { header: null }
 
-    async componentDidMount(){
+    componentDidMount = async () => {
         console.log("--------------------------------")
         this.subs = [
             this.props.navigation.addListener('didFocus', async () => {
                 const userToken = await AsyncStorage.getItem('userToken');
-                console.log(userToken);
-                
+                console.log("this is gallery:", userToken);
+                var galleryList = [];
                 if(userToken){
-                    var galleryList = []
                     await db.collection(userToken).get().then(doc => {
                         detectedHistory = doc.docs
                         detectedHistory.forEach(detectedImg => {
@@ -46,6 +44,7 @@ class Gallery extends Component{
                             galleryList.push(ImgInfo)
                         })
                     })
+
                     const response = {
                         data: {
                             avatar:"https://cdn140.picsart.com/268503922008211.png?r1024x1024",
@@ -69,7 +68,7 @@ class Gallery extends Component{
     }
 
     render() {
-       
+        console.log(this.state.galleryList);
         if(this.state.isLoggedIn){
             return (
                 <View
@@ -81,7 +80,7 @@ class Gallery extends Component{
                     {/* <Image
                         source={{ uri: this.state.galleryList[0].uri }}
                         style={styles.userPic} /> */}
-                    <MasonryList
+                    {this.state.galleryList.length===0?null:<MasonryList
                         images={this.state.galleryList}
                         columns={3}
                         backgroundColor={"#c0e2f7"}
@@ -98,7 +97,7 @@ class Gallery extends Component{
                                 </TouchableWithoutFeedback>
                             );
                         }}
-                    />
+                    />}
                 </View>
             );
         }else{
