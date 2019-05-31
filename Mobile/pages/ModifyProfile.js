@@ -97,11 +97,13 @@ class ModifyProfile extends Component {
         }
 
         console.log(postData);
-        db.collection('/users').doc(this.state.email).update(postData).then(()=>{
+        db.collection('/users').doc(this.state.email).set(postData).then(()=>{
             Alert.alert('Success','Profile was successfully modified!');
             this.props.navigation.navigate('Authentication');
-        }).catch(() => {
-            Alert.alert('Failure','Oops! Something went wrong on updating! Please try again!');
+
+        }).catch((e) => {
+            console.log(e)
+            Alert.alert('Failure','Oops! Something went wrong! Please try again!');
         });
     }
     //this.props.navigation.getParam('currentAvatar',"")

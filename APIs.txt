@@ -1,8 +1,0 @@
-Flickr (Deprecated due to imprecise photos got from Flickr)
-
-WhatCelebrity
-Key:
-fe335e4bd1d5fe65a9b23ee7e9aeec9e
-
-Secret:
-756a8e593072419f
