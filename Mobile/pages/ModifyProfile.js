@@ -92,7 +92,8 @@ class ModifyProfile extends Component {
         const postData = {
             avatar:this.state.avatar,
             name:this.state.name,
-            info:this.state.info
+            info:this.state.info,
+            email:this.state.email
         }
 
         console.log(postData);
@@ -100,7 +101,7 @@ class ModifyProfile extends Component {
             Alert.alert('Success','Profile was successfully modified!');
             this.props.navigation.navigate('Authentication');
         }).catch(() => {
-            Alert.alert('Failure','Oops! Something went wrong! Please try again!');
+            Alert.alert('Failure','Oops! Something went wrong on updating! Please try again!');
         });
     }
     //this.props.navigation.getParam('currentAvatar',"")
