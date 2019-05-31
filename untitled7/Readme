@@ -1,9 +1,0 @@
-1. put all the training img into "known_image" folder
-2. upload test img on the root directory
-3. and then just need change the "unknown_face" variable to the name of the test img you want to test 
-
-eg.
-  only need change this line
-    unknown_face = "wenyunsong.jpeg"
-  to the test img you want to test.
-
