@@ -92,14 +92,16 @@ class ModifyProfile extends Component {
         const postData = {
             avatar:this.state.avatar,
             name:this.state.name,
-            info:this.state.info
+            info:this.state.info,
+            email:this.state.email
         }
 
         console.log(postData);
-        db.collection('/users').doc(this.state.email).update(postData).then(()=>{
+        db.collection('/users').doc(this.state.email).set(postData).then(()=>{
             Alert.alert('Success','Profile was successfully modified!');
             this.props.navigation.navigate('Authentication');
-        }).catch(() => {
+        }).catch((e) => {
+            console.log(e)
             Alert.alert('Failure','Oops! Something went wrong! Please try again!');
         });
     }

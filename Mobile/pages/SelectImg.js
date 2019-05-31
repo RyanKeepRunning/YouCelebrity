@@ -20,16 +20,6 @@ import firebase from "../firebase";
 
 var db = firebase.firestore();
 
-// function getResponse() {
-//   return new Promise(function(resolve) {
-//     setTimeout(() => resolve({data:{
-//       imgSet:["http://www.gstatic.com/tv/thumb/persons/1650/1650_v9_ba.jpg","https://www.thenational.ae/image/policy:1.782205:1539936253/na20-WIllSmith.jpg?f=16x9&w=1200&$p$f$w=34b487a"],
-//       name:"Will Smith",
-//       similarity:"60%"
-//     }}), 4000);
-//   });
-// }
-
 
 function getResponse() {
   return new Promise(function(resolve) {
@@ -126,7 +116,8 @@ class SelectImg extends Component{
           });
 
           var result_data = {}
-          await sleep(40000).then(()=>{
+          // await sleep(40000).then(
+          const interval = setInterval(()=>{
             db.collection('output').doc('output').get().then(docSnapshot => {
               let Snapdata = docSnapshot.data();
               result_data = {
@@ -150,14 +141,15 @@ class SelectImg extends Component{
               this.props.navigation.navigate('Result',{result:result_data});
               this.setState({
                 isLoading:false
-              })
+              },()=>clearInterval(interval));
               db.collection('output').doc('output').delete();
               console.log("output data deleted.")
             }).catch(err => {
               console.log('Error getting document', err);
             });
-          })
-      }
+          },5000);
+      // )}
+        }
     }
     //why it is relevant. reference. not just what you gonna do, why it is the right/good way todo the testing.
     render(){
