@@ -32,6 +32,7 @@ class ModifyProfile extends Component {
             name:"",
             info:"",
             token:"",
+            // avatar:"https://cdn140.picsart.com/268503922008211.png?r1024x1024",
             imgSource:{
                 uri:"",
                 type:"",
@@ -43,42 +44,42 @@ class ModifyProfile extends Component {
 
     componentDidMount = () => {
         this.setState({
-            avatar: this.props.navigation.getParam('currentAvatar',""),
+            // avatar: this.props.navigation.getParam('currentAvatar',""),
             email: this.props.navigation.getParam('token',"")
         });
     }
 
 
-    uploadAvatar = async () => {
-        console.log("thisis uoloadAvatar");
-        const options = {
-          title: 'Select Avatar',
-          storageOptions: {
-            skipBackup: true,
-            path: 'images',
-          },
-        };
-        ImagePicker.showImagePicker(options, (response) => {
-          console.log('Response = ', response);
+    // uploadAvatar = async () => {
+    //     console.log("thisis uoloadAvatar");
+    //     const options = {
+    //       title: 'Select Avatar',
+    //       storageOptions: {
+    //         skipBackup: true,
+    //         path: 'images',
+    //       },
+    //     };
+    //     ImagePicker.showImagePicker(options, (response) => {
+    //       console.log('Response = ', response);
         
-          if (response.didCancel) {
-            console.log('User cancelled image picker');
-          } else if (response.error) {
-            console.log('ImagePicker Error: ', response.error);
-          } else if (response.customButton) {
-            console.log('User tapped custom button: ', response.customButton);
-          } else {
-            const source = {data: response.data};
+    //       if (response.didCancel) {
+    //         console.log('User cancelled image picker');
+    //       } else if (response.error) {
+    //         console.log('ImagePicker Error: ', response.error);
+    //       } else if (response.customButton) {
+    //         console.log('User tapped custom button: ', response.customButton);
+    //       } else {
+    //         const source = {data: response.data};
         
-            // You can also display the image using data:
-            // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-            this.setState({
-              avatar: source.data,
-            });
+    //         // You can also display the image using data:
+    //         // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+    //         this.setState({
+    //           avatar: source.data,
+    //         });
     
-          }
-        });
-      }
+    //       }
+    //     });
+    //   }
     
 
     onHandleSubmit= async()=>{
@@ -90,7 +91,7 @@ class ModifyProfile extends Component {
 
 
         const postData = {
-            avatar:this.state.avatar,
+            // avatar:this.state.avatar,
             name:this.state.name,
             info:this.state.info,
             email:this.state.email
@@ -114,14 +115,14 @@ class ModifyProfile extends Component {
             style={styles.container} 
             behavior={Platform.OS === "ios" ? "padding" : undefined} > 
             {/* avatar view */}
-            <TouchableWithoutFeedback onPress={() => this.uploadAvatar()}>
-                <Image style={styles.avatar} 
+            {/* <TouchableWithoutFeedback onPress={() => this.uploadAvatar()}> */}
+                {/* <Image style={styles.avatar} 
                     source={
                         !this.state.avatar ? 
                         require('../public/unLoggedInProfile.png'):
                         {uri:`data:image/gif;base64,${this.state.avatar}`}}
-                />
-            </TouchableWithoutFeedback>
+                /> */}
+            {/* </TouchableWithoutFeedback> */}
             <ScrollView style={styles.content}>
                 <TextInput 
                     placeholder="Your new name"
@@ -157,18 +158,18 @@ const styles = StyleSheet.create({
         flex:1,
         marginTop:120
     },
-    avatar: {
-        backgroundColor: '#f7bbda',
-        width: 110,
-        height: 110,
-        borderRadius: 53,
-        borderWidth: 4,
-        borderColor: "white",
-        marginBottom:10,
-        alignSelf:'center',
-        position: 'absolute',
-        marginTop:20,
-    },
+    // avatar: {
+    //     backgroundColor: '#f7bbda',
+    //     width: 110,
+    //     height: 110,
+    //     borderRadius: 53,
+    //     borderWidth: 4,
+    //     borderColor: "white",
+    //     marginBottom:10,
+    //     alignSelf:'center',
+    //     position: 'absolute',
+    //     marginTop:20,
+    // },
     inputForm:{
         height: 40,
         borderColor: '#00BFFF',

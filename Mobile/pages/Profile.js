@@ -59,7 +59,7 @@ class Profile extends Component {
     super(props);
 
     this.state={
-      avatar:"",
+      avatar:"https://cdn140.picsart.com/268503922008211.png?r1024x1024",
       name:"",
       info:"",
       email:""
@@ -140,9 +140,10 @@ class Profile extends Component {
         <View style={styles.header}></View>
             <Image style={styles.avatar} 
               source={
-                !this.state.avatar? 
-                require('../public/unLoggedInProfile.png'):
-                {uri:`data:image/gif;base64,${this.state.avatar}`}}
+                // !this.state.avatar? 
+                // require('../public/unLoggedInProfile.png'):
+                // {uri:`data:image/gif;base64,${this.state.avatar}`}}
+                {uri:`https://cdn140.picsart.com/268503922008211.png?r1024x1024`}}
                 />
           <View style={styles.body}>
             <View style={styles.bodyContent}>

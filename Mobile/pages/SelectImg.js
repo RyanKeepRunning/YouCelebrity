@@ -137,13 +137,14 @@ class SelectImg extends Component{
                 console.log('Added document with ID: ', ref.id);
               });
               console.log('test img recorded into history')
-    
+              db.collection('output').doc('output').delete();
+              console.log("output data deleted.");
               this.props.navigation.navigate('Result',{result:result_data});
               this.setState({
                 isLoading:false
-              },()=>clearInterval(interval));
-              db.collection('output').doc('output').delete();
-              console.log("output data deleted.")
+              },()=>clearInterval(interval)
+              );
+              
             }).catch(err => {
               console.log('Error getting document', err);
             });
