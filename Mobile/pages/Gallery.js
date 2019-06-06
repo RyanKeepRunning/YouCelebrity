@@ -14,6 +14,9 @@ import firebase from "../firebase";
 
 var db = firebase.firestore();
 
+// Class for image gallery. It shows all collected images with corresponding similarity.
+// If a user is not logged in, "go to login page" would be shown to navigate the user to login page.
+
 class Gallery extends Component{
     constructor(props){
         super(props);
@@ -26,14 +29,12 @@ class Gallery extends Component{
     static navigationOptions = { header: null }
 
     componentDidMount = async () => {
-        console.log("--------------------------------")
         this.subs = [
-            this.props.navigation.addListener('didFocus', async () => {
+            this.props.navigation.addListener('didFocus', async () => { // To update this page when the gallery tab is focused
                 const userToken = await AsyncStorage.getItem('userToken');
-                console.log("this is gallery:", userToken);
                 var galleryList = [];
                 if(userToken){
-                    await db.collection(userToken).get().then(doc => {
+                    await db.collection(userToken).get().then(doc => { // Fetch images from server.
                         detectedHistory = doc.docs
                         detectedHistory.forEach(detectedImg => {
                             ImgInfo = {
@@ -59,16 +60,16 @@ class Gallery extends Component{
         ];
     }
 
-    componentWillUnmount() {
-        this.subs.forEach(sub => sub.remove());
+    componentWillUnmount() { 
+        this.subs.forEach(sub => sub.remove()); // When gallery tab is not focused. Remove listener.
     }
 
-    onNavigateToLogin = ()=>{
+    // Navigate user to login page to login.
+    onNavigateToLogin = ()=>{ 
         this.props.navigation.navigate('Authentication');
     }
 
     render() {
-        console.log(this.state.galleryList);
         if(this.state.isLoggedIn){
             return (
                 <View
@@ -77,9 +78,6 @@ class Gallery extends Component{
                     <View style={[styles.header, styles.mobileHeader, { paddingTop: 20 }]}>
                         <Text style={styles.title}>Gallery</Text>
                     </View>
-                    {/* <Image
-                        source={{ uri: this.state.galleryList[0].uri }}
-                        style={styles.userPic} /> */}
                     {this.state.galleryList.length===0?null:<MasonryList
                         images={this.state.galleryList}
                         columns={3}
@@ -92,7 +90,7 @@ class Gallery extends Component{
                                             source={{ uri: this.state.avatar }}
                                             style={styles.userPic} />
                                         <Text style={styles.info}>{data.name} </Text>
-                                        <Text style={styles.info}>{data.similarity}</Text>
+                                        <Text style={styles.info}>{data.similarity.toString().slice(0,4)}%</Text>
                                     </View>
                                 </TouchableWithoutFeedback>
                             );

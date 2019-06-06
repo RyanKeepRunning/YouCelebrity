@@ -9,6 +9,7 @@ import {
     Alert
   } from 'react-native';
 
+// Class for homepage. List entry for celebrity and anime models.
 class Home extends Component{
     static navigationOptions = { header: null }
     constructor(props){
@@ -18,15 +19,15 @@ class Home extends Component{
         }
     }
     handleCelebrityModel=()=>{
-        this.props.navigation.navigate('SelectImg',{model:'Celebrity'});
+        this.props.navigation.navigate('SelectImg',{model:'Celebrity'});//use celebrity model
     }
 
     handleAnimeModel=()=>{
-        this.props.navigation.navigate('SelectImg',{model:'Anime'});
+        this.props.navigation.navigate('SelectImg',{model:'Anime'});//user anime model
     }
     
     render(){
-        console.log(this.state.imgSource);
+
         return(
             <View style={styles.container}>
                 <Text style={styles.text}>Choose a category</Text>

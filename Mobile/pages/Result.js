@@ -8,18 +8,18 @@ import {
     TouchableOpacity
   } from 'react-native';
 
+// Class for result showcase. Allow users to toggle between result and original photo.
 class Result extends Component{
     constructor(props){
         super(props);
         this.state = {
             checkGraph: 'img'
         }
-        console.log("this is result page")
 
     }
     onToggleGraph = ()=>{
         let checkGraph = this.state.checkGraph === "img"? "photo":"img";
-        console.log(checkGraph)
+
         this.setState({
             checkGraph:checkGraph,
         })
@@ -27,17 +27,12 @@ class Result extends Component{
 
     render(){
         const result = this.props.navigation.getParam('result',{});
-        console.log("this is result page's reslut:  ", result)
         var shownGraph;
-        console.log(this.state.checkGraph);
         if(this.state.checkGraph === 'img'){
-            // shownGraph = result.imgSet[0];
             shownGraph = result.detectedImg
         }else{
             shownGraph = result.testImg
-            // shownGraph = result.imgSet[1];
         }
-        console.log(shownGraph)
         return(
             <View style={styles.container}>
                 <TouchableOpacity

@@ -7,6 +7,7 @@ import {
     Alert
   } from 'react-native';
 
+//Initial Camera page. Already deprecated.
 class Camera extends Component{
     constructor(props){
         super(props);

@@ -14,6 +14,7 @@ import {Header} from 'react-navigation';
 import AsyncStorage from '@react-native-community/async-storage';
 import firebase from "../firebase";
 
+// Class for user login.
 class Login extends Component{
     static navigationOptions = { header: null };
     constructor(props){
@@ -25,22 +26,9 @@ class Login extends Component{
     }
 
     onLogin = async () => {
-        // console.log(this.state);
-        // var email = this.state.email 
-        // firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then(()=>{
-        //     AsyncStorage.setItem('userToken', this.state.email);
-        //     Alert.alert("Success!");
-        // }).catch(function(error) {
-        //     // Handle Errors here.
-        //     var errorCode = error.code;
-        //     var errorMessage = error.message;
-        //     Alert.alert(errorCode+": "+errorMessage+email);
-        //   });
-        // this.props.navigation.navigate('Authentication');
-        console.log(this.state);
         var email = this.state.email 
         var ifError = false;
-        firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+        firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password) //user login
         .catch(function(error) {
         // Handle Errors here.
         ifError=true;
@@ -48,7 +36,7 @@ class Login extends Component{
         var errorMessage = error.message;
         alert(errorCode+": "+errorMessage+email);
         });
-        if(!ifError){
+        if(!ifError){ //logged in
             await AsyncStorage.setItem('userToken', this.state.email);
             const userToken = await AsyncStorage.getItem('userToken');
             console.log(userToken);
@@ -58,7 +46,7 @@ class Login extends Component{
     }
 
     onNavigateRegister = () => {
-        this.props.navigation.navigate('Register');
+        this.props.navigation.navigate('Register');//navigate to register page.
     }
     render(){
         return(

@@ -14,9 +14,6 @@ import {
 import ImagePicker from 'react-native-image-picker';
 import AsyncStorage from '@react-native-community/async-storage';
 import firebase from "../firebase";
-// import { ENGINE_METHOD_NONE } from 'constants';
-
-
 
 var db = firebase.firestore();
 
@@ -83,8 +80,6 @@ class SelectImg extends Component{
             model: this.props.navigation.getParam('model',""), //the corresponding model: celebrity or anime
             token: token
           };
-          // You can also display the image using data:
-          // let source = { uri: 'data:image/jpeg;base64,' + response.data };
           this.setState({
             imgSource: source,
           });
@@ -106,7 +101,6 @@ class SelectImg extends Component{
           var img = this.state.imgSource.data  // use the Blob or File API
           testImg = img
 
-        //will modify after the anime model finished 
           var upload_data = { 
             base64: img,
             model:  this.state.imgSource.model
@@ -116,7 +110,6 @@ class SelectImg extends Component{
           });
 
           var result_data = {}
-          // await sleep(40000).then(
           const interval = setInterval(()=>{
             db.collection('output').doc('output').get().then(docSnapshot => {
               let Snapdata = docSnapshot.data();
@@ -149,10 +142,10 @@ class SelectImg extends Component{
               console.log('Error getting document', err);
             });
           },5000);
-      // )}
+
         }
     }
-    //why it is relevant. reference. not just what you gonna do, why it is the right/good way todo the testing.
+    
     render(){
         console.log(this.state.imgSource);
         return(
