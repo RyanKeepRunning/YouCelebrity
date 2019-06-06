@@ -42,6 +42,7 @@ class App extends React.Component {
   }
 }
 
+// Config Tab Icon for each page.
 const getTabBarIcon = (navigation, focused) => {
   const { routeName } = navigation.state;
   if (routeName === 'Home') {
@@ -62,6 +63,7 @@ const getTabBarIcon = (navigation, focused) => {
   };
 }
 
+// Create structure for each page
 let HomeStack = createStackNavigator({
   Home,SelectImg,Result
 },{initialRouteName:'Home'});
@@ -80,6 +82,7 @@ const MembershipSwitch = createSwitchNavigator({
   Authentication,LoginStack,ProfileStack
 })
 
+// Config for tab
 const TabNavigator = createBottomTabNavigator({
   Home:{screen:HomeStack,navigationOptions:{
     tabBarLabel:'Home',
