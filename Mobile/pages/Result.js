@@ -42,7 +42,7 @@ class Result extends Component{
                 </TouchableOpacity>
                 <Image source={{uri:`data:image/gif;base64,${shownGraph}`}} style={styles.exampleImg} />
                 <Text style={styles.text}>{result.name}</Text>
-                <Text style={styles.text}>Similarity: {result.similarity}</Text>
+                <Text style={styles.text}>Similarity: {result.similarity.toString().slice(0,4)}%</Text>
             </View>
         )
     }
