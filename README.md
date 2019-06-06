@@ -1,5 +1,5 @@
 # YouCelebrity
-It's an amazing mobile application that mainly provides the functionality of telling you which celebrity you look like.
+It's an amazing mobile application that coudl tell you which celebrity you look like.
 
 Core functionalities (take a photo or upload from library):
 
@@ -16,3 +16,9 @@ Bonus functionalities:
 3 Image gallery
 
 4 Delete image gallery history
+
+Manual (Run under folder Mobile. Sequence matters):
+
+Run command: react-native start
+
+Run command with android phone connected: react-native run-android
