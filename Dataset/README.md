@@ -1,5 +1,6 @@
 # Following links store the dataset used in this project
 
-**TF Record files URL**:
+**Celebrities Dataset and TF Record files URL**: https://drive.google.com/drive/folders/1qBj8tScve0aI4r7uCW6h6YL9BjIeQ8Ur?usp=sharing
 
-**Original Dataset URL**:
+**Anime Dataset and TF Record files URL**:
+
