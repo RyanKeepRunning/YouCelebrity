@@ -14,25 +14,10 @@ import {
 import ImagePicker from 'react-native-image-picker';
 import AsyncStorage from '@react-native-community/async-storage';
 import firebase from "../firebase";
-// import { ENGINE_METHOD_NONE } from 'constants';
-
-
 
 var db = firebase.firestore();
 
-
-function getResponse() {
-  return new Promise(function(resolve) {
-    setTimeout(() => resolve(result_data), 4000);
-  });
-}
-
-const sleep = (milliseconds) => {
-  return new Promise(resolve => setTimeout(resolve, milliseconds))
-}
-
-var testImg
-
+// class for img selection.
 class SelectImg extends Component{
     constructor(props){
         super(props);
@@ -48,9 +33,8 @@ class SelectImg extends Component{
         }
     }
 
-
+    // use image picker to select image. 2 modes: library or take a photo
     selectPhotoTapped = async () =>{
-      console.log('------------');
 
       let token = await AsyncStorage.getItem('userToken');
       if(!token){
@@ -83,8 +67,6 @@ class SelectImg extends Component{
             model: this.props.navigation.getParam('model',""), //the corresponding model: celebrity or anime
             token: token
           };
-          // You can also display the image using data:
-          // let source = { uri: 'data:image/jpeg;base64,' + response.data };
           this.setState({
             imgSource: source,
           });
@@ -93,31 +75,28 @@ class SelectImg extends Component{
     }
     
     handleSubmit = async ()=>{
-      if(this.state.imgSource.uri === ""){
+      if(this.state.imgSource.uri === ""){ // photo not selected
         Alert.alert('Hey mate! You should select a photo first!');
       }else{
-        AsyncStorage.getItem('userToken').then((value) => {
+        AsyncStorage.getItem('userToken').then((value) => { // valid user
           this.setState({ 
             email: value,
             isLoading:true
            });
-          console.log("this.state.email: ",this.state.email);
+
           
           var img = this.state.imgSource.data  // use the Blob or File API
-          testImg = img
 
-        //will modify after the anime model finished 
           var upload_data = { 
             base64: img,
             model:  this.state.imgSource.model
           }
           db.collection('imgs').doc('img').set(upload_data);
-          console.log('test img uploaded! ');
+
           });
 
           var result_data = {}
-          // await sleep(40000).then(
-          const interval = setInterval(()=>{
+          const interval = setInterval(()=>{ // try to fetch result from server with 5s interval
             db.collection('output').doc('output').get().then(docSnapshot => {
               let Snapdata = docSnapshot.data();
               result_data = {
@@ -126,7 +105,6 @@ class SelectImg extends Component{
                 name:Snapdata['predict_name'],
                 similarity:Snapdata['predict_score']
               }
-              console.log(result_data);
 
               var upload_data = { 
                 base64: Snapdata['celebrity']['_binaryString'],
@@ -137,21 +115,22 @@ class SelectImg extends Component{
                 console.log('Added document with ID: ', ref.id);
               });
               console.log('test img recorded into history')
-    
-              this.props.navigation.navigate('Result',{result:result_data});
+              db.collection('output').doc('output').delete();
+              console.log("output data deleted.");
+              this.props.navigation.navigate('Result',{result:result_data}); // redirect to result page
               this.setState({
                 isLoading:false
-              },()=>clearInterval(interval));
-              db.collection('output').doc('output').delete();
-              console.log("output data deleted.")
+              },()=>clearInterval(interval) //remove interval if photo has been fetched from server
+              );
+              
             }).catch(err => {
               console.log('Error getting document', err);
             });
           },5000);
-      // )}
+
         }
     }
-    //why it is relevant. reference. not just what you gonna do, why it is the right/good way todo the testing.
+    
     render(){
         console.log(this.state.imgSource);
         return(

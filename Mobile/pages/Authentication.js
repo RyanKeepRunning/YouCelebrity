@@ -7,6 +7,10 @@ import {
   } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
+// This class is for authentication purpose. It verifies whether AsyncStorage is empty
+// and redirect the user to profile page or login page based on the fact whether
+// the user has logged in.
+
 class Authentication extends Component{
     constructor(props){
         super(props);
@@ -17,12 +21,10 @@ class Authentication extends Component{
 
     asyncNavigation= async ()=>{
         const userToken = await AsyncStorage.getItem('userToken');
-        // console.log("this is authentication",userToken);
         this.props.navigation.navigate(userToken?'Profile':'Login');
     }
 
     render(){
-        // console.log("Authentication");
         return(
             <View style={styles.container}>
             <ActivityIndicator />

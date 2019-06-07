@@ -14,8 +14,8 @@ import {Header} from 'react-navigation';
 import AsyncStorage from '@react-native-community/async-storage';
 import firebase from "../firebase";
 
-// import axios from 'axios';
 
+// Class for user registration.
 class Register extends Component{
     constructor(props){
         super(props);
@@ -42,8 +42,6 @@ class Register extends Component{
             name: this.state.email,
             info: 'null',
           }); 
-        // await AsyncStorage.setItem('userToken', 'abc');
-        // alert("Success Sign Up!")
         this.props.navigation.navigate('Authentication');}
         else {
             Alert.alert("please enter email and password!")
@@ -56,10 +54,8 @@ class Register extends Component{
             style={styles.container} 
             behavior={Platform.OS === "ios" ? "padding" : "undefined"}
             keyboardVerticalOffset={Header.HEIGHT +20} > 
-            {/* avatar view */}
             <Image style={styles.avatar} source={require('../public/unLoggedInProfile.png')}/>
             <Text style={styles.msg}>Register your account</Text>
-            {/* avatart upload button */}
             <ScrollView style={styles.content} >
                 <TextInput 
                     keyboardType='email-address'

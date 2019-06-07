@@ -8,12 +8,8 @@ import {
   Alert,
   ActivityIndicator
 } from 'react-native';
-import ImagePicker from 'react-native-image-picker';
 import AsyncStorage from '@react-native-community/async-storage';
 import firebase from "../firebase";
-
-// import { createAppContainer, createStackNavigator} from 'react-navigation';
-
 const db = firebase.firestore();
 
 function deleteCollection(db, collectionPath, batchSize) {
@@ -28,7 +24,6 @@ function deleteCollection(db, collectionPath, batchSize) {
 function deleteQueryBatch(db, query, batchSize, resolve, reject) {
   query.get()
       .then((snapshot) => {
-        // When there are no documents left, we are done
         if (snapshot.size == 0) {
           return 0;
         }
@@ -54,12 +49,14 @@ function deleteQueryBatch(db, query, batchSize, resolve, reject) {
       }).catch(reject);    
 }
 
+// Class for profile page. Provides entry for profile modification, deleting histoy of image gallery and logout.
+
 class Profile extends Component {
   constructor(props){
     super(props);
 
     this.state={
-      avatar:"",
+      avatar:"https://cdn140.picsart.com/268503922008211.png?r1024x1024",
       name:"",
       info:"",
       email:""
@@ -67,7 +64,7 @@ class Profile extends Component {
   }
 
   static navigationOptions = { header: null }
-  onDeleteHistory=()=>{
+  onDeleteHistory=()=>{ //popup window to double check user purpose.
     Alert.alert('Warning',
     ' You would lose all the records if you delete the history!',
     [
@@ -79,7 +76,6 @@ class Profile extends Component {
   }
 
   onLogout= async ()=>{
-    //TODO You also need to logout at the backend!
     await AsyncStorage.clear();
     this.props.navigation.navigate('Authentication');
   }
@@ -88,21 +84,13 @@ class Profile extends Component {
 
   componentDidMount = async ()=>{
     this.subs = [
-      this.props.navigation.addListener('didFocus',async ()=>{
-        const response = {
-          data:{
-            avatar:'https://cdn140.picsart.com/268503922008211.png?r1024x1024',
-            name:'Ryan',
-            info:'App developer',
-            status: 'success'
-          }
-        }
+      this.props.navigation.addListener('didFocus',async ()=>{ // listener for this page. Triggered if profile tab is focused.
     
         AsyncStorage.getItem('userToken').then((value) => {
           
           if(value){
     
-        db.collection('/users').doc(value).get().then(doc => {
+        db.collection('/users').doc(value).get().then(doc => { // check state of user account
             if (!doc.exists) {
               console.log('No such document!');
             } else {
@@ -110,7 +98,7 @@ class Profile extends Component {
                 'email': value, 
                 'name' : doc.data()['name'],
                 'info' : doc.data()['info'],
-                'avatar':doc.data()['avatar'] //Hardcoded for test purpose. Modify it later.
+                'avatar':doc.data()['avatar']
               })
             }
           }).catch(err => {
@@ -125,7 +113,7 @@ class Profile extends Component {
   }
 
   componentWillUnmount() {
-    this.subs.forEach(sub => sub.remove());
+    this.subs.forEach(sub => sub.remove()); // remove listener if profile tab is not focused.
   }
 
   render() {
@@ -140,9 +128,7 @@ class Profile extends Component {
         <View style={styles.header}></View>
             <Image style={styles.avatar} 
               source={
-                !this.state.avatar? 
-                require('../public/unLoggedInProfile.png'):
-                {uri:`data:image/gif;base64,${this.state.avatar}`}}
+                {uri:`https://cdn140.picsart.com/268503922008211.png?r1024x1024`}}
                 />
           <View style={styles.body}>
             <View style={styles.bodyContent}>
