@@ -1,6 +1,6 @@
 """
  AUTHOR : Peng Cheng
- PURPOSE : Formatting Image Name
+ PURPOSE : Reformat Image Name
 """
 import os
 import shutil
