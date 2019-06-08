@@ -21,6 +21,8 @@ Bonus functionalities:
 
 
 Manual (Run under folder Mobile. Sequence matters):
+  
+  Run command (install dependencies): npm install
 
   Run command: react-native start
 
