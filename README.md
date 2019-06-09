@@ -22,7 +22,7 @@ It's an amazing mobile application that coudl tell you which celebrity you look 
 <br/>
 <b>Manual (Run under folder Mobile. Sequence matters):</b>
   
-  Run command (install dependencies such as react-native-masonry-list for image location configuration and react-native-image-picker for image upload. Details see <a href="https://github.com/RyanKeepRunning/YouCelebrity/blob/dev/Mobile/package.json">package.json</a> file): npm install
+  Run command (install dependencies such as react-native-masonry-list for image location configuration and react-native-image-picker for image upload. Details see <a href="https://github.com/RyanKeepRunning/YouCelebrity/blob/dev/Mobile/package.json">package.json</a> file): ```npm install```
 
   After successfully installed all the dependencies, the next step is to run the image process file in google cloud platform as follow:
 
@@ -44,6 +44,6 @@ It's an amazing mobile application that coudl tell you which celebrity you look 
 
   then go back to run the react-native file
   
-  Run command: react-native start
+  Run command: ```react-native start```
 
-  Run command with android phone connected: react-native run-android
+  Run command with android phone connected: ```react-native run-android```
