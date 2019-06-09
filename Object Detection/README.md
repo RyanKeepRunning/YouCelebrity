@@ -1,5 +1,5 @@
 # BUILDING MODEL AND EVALUATION:
-Main idea is gatherred from [Object_Detection](https://github.com/tensorflow/models/tree/master/research/object_detection)
+Main idea is gathered from [Object_Detection](https://github.com/tensorflow/models/tree/master/research/object_detection)
 
 ## BUILDING MODEL 
 **1. Get models**:
