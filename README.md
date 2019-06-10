@@ -27,13 +27,13 @@ It's an amazing mobile application that coudl tell you which celebrity you look 
   After successfully installed all the dependencies, the next step is to run the image process file in google cloud platform as follow:
 
   <b>Step 1:</b>
-  First you need download the public key file```pubkey``` to your local machine and input code below in your ternimal:
+  Download the public key file```pubkey``` to your local machine and input code below in your terminal:
   <br/>
   ```ssh -i <path_of_pubkey> cyg@35.244.113.146```<br/>
   The gcp will then ask you for the password, just input "159357".
 
   <b>Step 2:</b>
-  Then you need go to the object_detection folder as follow:<br/>
+  Navigate to the object_detection folder as follow:<br/>
   ```cd models\research\object_dectection```
 
   <b>Step 3:</b>
