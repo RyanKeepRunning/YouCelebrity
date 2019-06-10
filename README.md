@@ -20,9 +20,9 @@ It's an amazing mobile application that coudl tell you which celebrity you look 
   4 Delete image gallery history
 <br/>
 <br/>
-<b>Manual (Run under folder Mobile. Sequence matters):</b>
+<b>Manual:</b>
   
-  Run command (install dependencies such as react-native-masonry-list for image location configuration and react-native-image-picker for image upload. Details see <a href="https://github.com/RyanKeepRunning/YouCelebrity/blob/dev/Mobile/package.json">package.json</a> file): ```npm install```
+  Run command under folder "Mobile" (install dependencies such as react-native-masonry-list for image location configuration and react-native-image-picker for image upload. Details see <a href="https://github.com/RyanKeepRunning/YouCelebrity/blob/dev/Mobile/package.json">package.json</a> file): ```npm install```
 
   After successfully installed all the dependencies, the next step is to run the image process file in google cloud platform as follow:
 
@@ -42,8 +42,8 @@ It's an amazing mobile application that coudl tell you which celebrity you look 
 
   if you successfully started this python file, you will see a sentence "img not uploaded yet" in your terminal
 
-  then go back to run the react-native file
+  then go back to run the react-native commands
   
-  Run command: ```react-native start```
+  Run command under folder "Mobile": ```react-native start```
 
-  Run command with android phone connected: ```react-native run-android```
+  Run command under folder "Mobile" with android phone connected: ```react-native run-android```
